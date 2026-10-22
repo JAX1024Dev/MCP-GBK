@@ -269,13 +269,11 @@ fn replace_existing(tmp: NamedTempFile, path: &Path) -> Result<()> {
 fn replace_existing(tmp: NamedTempFile, path: &Path) -> Result<()> {
     use std::os::windows::ffi::OsStrExt;
     use windows_sys::Win32::Storage::FileSystem::ReplaceFileW;
+    // ReplaceFileW opens the replacement without sharing access. Close our
+    // writing handle first, retaining automatic path cleanup on failure.
+    let tmp = tmp.into_temp_path();
     let target: Vec<u16> = path.as_os_str().encode_wide().chain(Some(0)).collect();
-    let source: Vec<u16> = tmp
-        .path()
-        .as_os_str()
-        .encode_wide()
-        .chain(Some(0))
-        .collect();
+    let source: Vec<u16> = tmp.as_os_str().encode_wide().chain(Some(0)).collect();
     let ok = unsafe {
         ReplaceFileW(
             target.as_ptr(),

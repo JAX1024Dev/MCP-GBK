@@ -284,13 +284,13 @@ async fn explicit_gbk_overrides_bom_looking_bytes_and_can_commit() {
 
 #[cfg(windows)]
 #[tokio::test]
-async fn occupied_windows_target_fails_without_deleting_original() {
+async fn occupied_windows_target_preserves_original_and_allows_retry() {
     use std::os::windows::fs::OpenOptionsExt;
     let (temp, server) = fixture();
     let path = temp.path().join("locked.c");
     fs::write(&path, gbk("中文")).unwrap();
     let read = run(&server, "read_file", json!({"path":"locked.c"})).await;
-    let _locked = fs::OpenOptions::new()
+    let locked = fs::OpenOptions::new()
         .read(true)
         .share_mode(1)
         .open(&path)
@@ -306,6 +306,16 @@ async fn occupied_windows_target_fails_without_deleting_original() {
             .is_err()
     );
     assert_eq!(fs::read(&path).unwrap(), gbk("中文"));
+    assert_eq!(fs::read_dir(temp.path()).unwrap().count(), 1);
+    drop(locked);
+    run(
+        &server,
+        "write_file",
+        json!({"path":"locked.c","content":"修改","expected_revision":read["revision"]}),
+    )
+    .await;
+    assert_eq!(fs::read(&path).unwrap(), gbk("修改"));
+    assert_eq!(fs::read_dir(temp.path()).unwrap().count(), 1);
 }
 
 #[tokio::test]
