@@ -1,0 +1,39 @@
+[package]
+name = "gbk-mcp"
+version = "0.1.0"
+edition = "2024"
+rust-version = "1.88"
+description = "Encoding-preserving file tools for coding agents over MCP"
+license = "MIT"
+repository = "https://github.com/JAX1024Dev/MCP-GBK"
+readme = "README.md"
+exclude = ["benchmark-data/**", "benchmark-results/**", "target/**", "**/__pycache__/**"]
+
+[dependencies]
+blake3 = "1"
+clap = { version = "4", features = ["derive"] }
+encoding_rs = "0.8"
+globset = "0.4"
+grep-regex = "0.1"
+grep-matcher = "0.1"
+grep-searcher = "0.1"
+ignore = "0.4"
+rmcp = { version = "3.6", default-features = false, features = ["server", "transport-io", "schemars"] }
+schemars = "1"
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+similar = "3"
+tempfile = "3"
+thiserror = "2"
+tokio = { version = "1", features = ["macros", "rt-multi-thread", "io-std", "signal", "sync", "time"] }
+tokio-util = "0.7"
+
+[target.'cfg(windows)'.dependencies]
+windows-sys = { version = "0.61", features = ["Win32_Storage_FileSystem", "Win32_Foundation"] }
+
+[target.'cfg(unix)'.dependencies]
+libc = "0.2"
+
+[profile.release]
+lto = "thin"
+strip = true

@@ -1,0 +1,9 @@
+{
+  "mcpServers": {
+    "gbk": {
+      "type": "stdio",
+      "command": "/absolute/path/to/gbk-mcp",
+      "args": ["--root", "/absolute/path/to/project"]
+    }
+  }
+}

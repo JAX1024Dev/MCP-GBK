@@ -1,0 +1,45 @@
+{
+  "date": "2026-10-23",
+  "claude_code_version": "2.1.308",
+  "codex_cli_version": "0.163.0-alpha.11",
+  "built_in_tools_disabled": false,
+  "project_instruction_routing": true,
+  "clients": {
+    "claude": {
+      "client": "claude",
+      "returncode": 0,
+      "wall_ms": 30598.38525,
+      "gbk_bytes_preserved": true,
+      "new_file_utf8": true,
+      "mcp_tool_calls": [
+        "ToolSearch",
+        "mcp__gbk__glob",
+        "mcp__gbk__grep",
+        "mcp__gbk__read_file",
+        "mcp__gbk__edit_file",
+        "mcp__gbk__read_file",
+        "mcp__gbk__write_file"
+      ],
+      "all_five_tools_routed": true,
+      "passed": true
+    },
+    "codex": {
+      "client": "codex",
+      "returncode": 0,
+      "wall_ms": 27403.584749999998,
+      "gbk_bytes_preserved": true,
+      "new_file_utf8": true,
+      "mcp_tool_calls": [
+        "mcp__gbk__glob",
+        "mcp__gbk__grep",
+        "mcp__gbk__read_file",
+        "mcp__gbk__edit_file",
+        "mcp__gbk__read_file",
+        "mcp__gbk__write_file",
+        "mcp__gbk__read_file"
+      ],
+      "all_five_tools_routed": true,
+      "passed": true
+    }
+  }
+}

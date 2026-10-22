@@ -1,0 +1,93 @@
+{
+  "platform": "macOS-27.0.1-arm64-arm-64bit",
+  "logical_cpus": 14,
+  "binary_sha256": "7aff9bc69abfb882c8eac6ff0137bb289b4131cc908b6807503cebb563ede07b",
+  "threads_budget": 8,
+  "cache_state": "warm_or_uncontrolled; OS caches not purged",
+  "dataset": {
+    "files": 1000000,
+    "bytes_per_file": 10240,
+    "complete": true
+  },
+  "cases": {
+    "auto_first_100": {
+      "wall_ms": 184.024584,
+      "complete": false,
+      "elapsed_ms": 183,
+      "error_counts": {},
+      "errors": [],
+      "returned_items": 100,
+      "notice": "Scan incomplete. Zero returned matches do not establish absence. Narrow the path/glob/pattern, specify encoding, or increase timeout_ms.",
+      "stop_reason": "result_limit",
+      "visited_files": 4897
+    },
+    "auto_full": {
+      "wall_ms": 36628.049791000005,
+      "complete": true,
+      "elapsed_ms": 36627,
+      "error_counts": {},
+      "errors": [],
+      "returned_items": 0,
+      "notice": null,
+      "stop_reason": null,
+      "visited_files": 1000000
+    },
+    "gbk_explicit_full": {
+      "wall_ms": 17058.352917,
+      "complete": true,
+      "elapsed_ms": 17058,
+      "error_counts": {},
+      "errors": [],
+      "returned_items": 0,
+      "notice": null,
+      "stop_reason": null,
+      "visited_files": 500000,
+      "rg_ratio": 1.1080893171774042
+    },
+    "utf8_explicit_full": {
+      "wall_ms": 15736.382583999997,
+      "complete": true,
+      "elapsed_ms": 15736,
+      "error_counts": {},
+      "errors": [],
+      "returned_items": 0,
+      "notice": null,
+      "stop_reason": null,
+      "visited_files": 500000,
+      "rg_ratio": 1.0505867662065844
+    },
+    "two_concurrent": {
+      "wall_ms": 18126.731875000005,
+      "results": [
+        {
+          "complete": true,
+          "elapsed_ms": 18126,
+          "error_counts": {},
+          "errors": [],
+          "returned_items": 0,
+          "notice": null,
+          "stop_reason": null,
+          "visited_files": 500000
+        },
+        {
+          "complete": true,
+          "elapsed_ms": 17285,
+          "error_counts": {},
+          "errors": [],
+          "returned_items": 0,
+          "notice": null,
+          "stop_reason": null,
+          "visited_files": 500000
+        }
+      ]
+    },
+    "rg_gbk_full": {
+      "wall_ms": 15394.384416999997
+    },
+    "rg_utf8_full": {
+      "wall_ms": 14978.660582999993
+    }
+  },
+  "peak_rss_kib": 14272,
+  "measurement_date": "2026-10-23"
+}

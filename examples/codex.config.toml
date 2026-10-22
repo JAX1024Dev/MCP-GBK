@@ -1,0 +1,7 @@
+[mcp_servers.gbk]
+command = "/absolute/path/to/gbk-mcp"
+args = ["--root", "/absolute/path/to/project"]
+startup_timeout_sec = 10
+tool_timeout_sec = 330
+required = true
+enabled_tools = ["read_file", "write_file", "edit_file", "glob", "grep"]
