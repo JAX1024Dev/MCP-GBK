@@ -1,4 +1,4 @@
-# 本地验证记录
+# 验证记录
 
 验证日期：2026-10-23，Asia/Shanghai。
 
@@ -78,7 +78,27 @@ cargo clippy --locked --all-targets --target x86_64-pc-windows-gnu --features bl
 这里的 blake3/pure 仅用于避免在 macOS 交叉检查时依赖 Windows 汇编工具链；
 原生 release 构建沿用默认优化实现。
 
-**本次未在 Windows 或 Linux 原生系统执行测试。** `.github/workflows/ci.yml`
-已配置 Windows、Linux、macOS 的格式、clippy、Rust 测试、stdio 冒烟、release
-构建和打包。该工作流尚未在远程 CI 运行，Windows 文件占用、NTFS 权限和参考
-Windows 硬件上的性能仍待原生验收；macOS 指标不能替代 Windows 验收结果。
+## 首版发布前的原生 CI
+
+2026-10-23，在 [GitHub Actions CI](https://github.com/JAX1024Dev/MCP-GBK/actions/runs/39818614236)
+对提交 `ccc9931` 执行了三平台原生检查。格式、clippy、Rust 集成测试和真实
+stdio MCP 冒烟均通过：
+
+| 平台 | Rust 集成测试 | stdio 冒烟 |
+| --- | --- | --- |
+| Windows x64 / MSVC | 18 项通过 | 通过 |
+| Linux x64 / GNU | 17 项通过 | 通过 |
+| macOS | 17 项通过 | 通过 |
+
+首次 Windows CI 暴露了替换源文件仍持有写句柄导致的共享冲突，已在调用
+`ReplaceFileW` 前关闭该句柄。回归覆盖普通 GBK 编辑、完整覆盖、外部文件占用
+时保留原内容、临时文件清理，以及释放占用后的重试成功。
+
+CI 同时配置 release 构建与 ZIP 打包，完整作业状态以链接为准。版本标签触发
+的 [Release 工作流](https://github.com/JAX1024Dev/MCP-GBK/actions/workflows/release.yml)
+负责构建和发布 Windows x64、Linux x64 与 macOS Apple Silicon 的附件。
+
+上述结果是托管 runner 的功能检查，尚未在 Windows 11 / 8 核 / 16 GiB /
+本地 NVMe 的参考硬件上完成百万文件性能测量，也没有单独覆盖自定义 NTFS ACL
+策略。macOS 性能指标不能替代 Windows 性能验收。本次发布后只确认版本和附件
+存在，不下载 Release 二进制重复测试。
