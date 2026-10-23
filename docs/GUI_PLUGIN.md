@@ -4,7 +4,8 @@
 使用。下载 ZIP 后直接上传，无需解压、执行终端安装命令、注册 marketplace 或填写
 项目 root。它与已有 marketplace 安装包包含相同的五个 MCP 工具、Skill 和三个 Hook。
 
-0.2.1 尚未发布 Release，构建产物可在对应提交的 GitHub Actions CI 中取得。
+从 [v0.2.1 Release](https://github.com/JAX1024Dev/MCP-GBK/releases/tag/v0.2.1)
+下载对应 GUI ZIP 和同版本 SHA256SUMS。
 
 ## 选择安装包
 

@@ -1,13 +1,13 @@
 # 变更记录
 
-## [0.2.1] — 未发布
+## [0.2.1] — 2026-10-24
 
 - 新增三平台单插件 GUI ZIP，Desktop Code 可通过 Upload local plugin 安装；
   程序使用 `server/` 路径，无 marketplace 外层，Unix ZIP 保存执行权限。
 - 保留现有 marketplace 格式，打包器新增 `--format plugin-zip`，冒烟测试新增
   `--archive PATH`；两个格式共用 MCP、Skill 和默认 Hook，不增加运行时依赖。
 - 新增 GUI 安装、同名替换及系统安全提示说明；CI 验证两种压缩包布局和运行闭环，
-  后续标签发布同时提供三个 MCP 包、三个 marketplace 包及三个 GUI ZIP。
+  本版提供三个 MCP 包、三个 marketplace 包及三个 GUI ZIP。
 
 ## [0.2.0] — 2026-10-23
 

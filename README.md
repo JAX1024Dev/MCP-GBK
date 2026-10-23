@@ -8,23 +8,21 @@
 
 ## 下载与安装
 
-开发中的 **0.2.1** 新增三平台 GUI ZIP：在 Desktop **Code → Customize → Plugins →
-Add plugin → Upload plugin** 直接上传，无需终端安装命令；使用本机安装入口，
-不依靠账户插件同步。[GUI 安装指南](docs/GUI_PLUGIN.md) 说明包名、替换和系统提示。
-0.2.1 尚未发布 Release，可从 [CI 构建产物](https://github.com/JAX1024Dev/MCP-GBK/actions/workflows/ci.yml)
-取得 `claude-plugin-gui-*.zip`；原 marketplace 格式保留。
+当前版本为 **v0.2.1**，从 [GitHub Release](https://github.com/JAX1024Dev/MCP-GBK/releases/tag/v0.2.1)
+下载对应平台的包及 `SHA256SUMS`。
 
-当前版本为 **v0.2.0**。从 [GitHub Releases](https://github.com/JAX1024Dev/MCP-GBK/releases/tag/v0.2.0)
-下载对应平台的包和 `SHA256SUMS`。独立 MCP 包适合 Claude、Codex 等客户端；
-Claude 插件包含同版本程序、Skill、本地 marketplace 和默认 Hook。
+Desktop **Code → Customize → Plugins → Add plugin → Upload plugin** 可直接上传
+GUI ZIP，无需解压或执行安装命令，适用于本机 Code 会话及 API Key／第三方服务。
+详见 [GUI 安装指南](docs/GUI_PLUGIN.md)。原 marketplace 安装方式继续保留。
 
-| 平台 | 独立 MCP 包 | Claude 离线插件包 |
-| --- | --- | --- |
-| Windows x64（MSVC） | `gbk-mcp-0.2.0-windows-x86_64.zip` | `gbk-mcp-0.2.0-claude-plugin-windows-x86_64.zip` |
-| Linux x64（GNU/glibc） | `gbk-mcp-0.2.0-linux-x86_64.zip` | `gbk-mcp-0.2.0-claude-plugin-linux-x86_64.tar.gz` |
-| macOS Apple Silicon | `gbk-mcp-0.2.0-darwin-aarch64.zip` | `gbk-mcp-0.2.0-claude-plugin-darwin-aarch64.tar.gz` |
+| 平台 | 独立 MCP 包 | Marketplace 包 | GUI 上传包 |
+| --- | --- | --- | --- |
+| Windows x64（MSVC） | `gbk-mcp-0.2.1-windows-x86_64.zip` | `gbk-mcp-0.2.1-claude-plugin-windows-x86_64.zip` | `gbk-mcp-0.2.1-claude-plugin-gui-windows-x86_64.zip` |
+| Linux x64（GNU/glibc） | `gbk-mcp-0.2.1-linux-x86_64.zip` | `gbk-mcp-0.2.1-claude-plugin-linux-x86_64.tar.gz` | `gbk-mcp-0.2.1-claude-plugin-gui-linux-x86_64.zip` |
+| macOS Apple Silicon | `gbk-mcp-0.2.1-darwin-aarch64.zip` | `gbk-mcp-0.2.1-claude-plugin-darwin-aarch64.tar.gz` | `gbk-mcp-0.2.1-claude-plugin-gui-darwin-aarch64.zip` |
 
-插件安装见 [离线插件指南](docs/OFFLINE_PLUGIN.md)。Unix 插件使用 tar.gz 保留执行权限。
+独立 MCP 包适合 Claude、Codex 等客户端；插件包含同版本程序、Skill 和默认 Hook。
+Marketplace 安装见 [离线插件指南](docs/OFFLINE_PLUGIN.md)。
 
 Windows 启动示例：
 

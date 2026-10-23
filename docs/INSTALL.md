@@ -4,19 +4,19 @@ GBK MCP 是本地 stdio MCP 服务，每个进程绑定一个已存在的项目�
 发布包包含可执行程序、配置示例、文档及上游许可证；运行时不依赖 Rust、Python、
 Node.js 或独立安装的 ripgrep。
 
-## 下载 v0.2.0
+## 下载 v0.2.1
 
 Claude Code 用户也可以直接安装自带默认 Hook 的[三平台离线插件](OFFLINE_PLUGIN.md)。
 下面介绍适用于 Claude、Codex 等客户端的独立 MCP 包。
 
-在 [v0.2.0 Release](https://github.com/JAX1024Dev/MCP-GBK/releases/tag/v0.2.0)
+在 [v0.2.1 Release](https://github.com/JAX1024Dev/MCP-GBK/releases/tag/v0.2.1)
 下载适合本机的 ZIP，同时下载该页面的 `SHA256SUMS`。
 
 | 系统与架构 | ZIP 名称 | Rust 目标 |
 | --- | --- | --- |
-| Windows 64 位 Intel/AMD | `gbk-mcp-0.2.0-windows-x86_64.zip` | `x86_64-pc-windows-msvc` |
-| Linux 64 位 Intel/AMD | `gbk-mcp-0.2.0-linux-x86_64.zip` | `x86_64-unknown-linux-gnu` |
-| macOS Apple Silicon | `gbk-mcp-0.2.0-darwin-aarch64.zip` | `aarch64-apple-darwin` |
+| Windows 64 位 Intel/AMD | `gbk-mcp-0.2.1-windows-x86_64.zip` | `x86_64-pc-windows-msvc` |
+| Linux 64 位 Intel/AMD | `gbk-mcp-0.2.1-linux-x86_64.zip` | `x86_64-unknown-linux-gnu` |
+| macOS Apple Silicon | `gbk-mcp-0.2.1-darwin-aarch64.zip` | `aarch64-apple-darwin` |
 
 Linux 包使用 GNU libc，面向构建工作流对应的 Ubuntu 环境；不提供 musl/Alpine
 兼容承诺。其他架构可从源码构建。发布附件是否齐全以 Release 页面为准。
@@ -26,7 +26,7 @@ Linux 包使用 GNU libc，面向构建工作流对应的 Ubuntu 环境；不提
 将 ZIP 与 `SHA256SUMS` 放在同一目录，在该目录打开 PowerShell：
 
 ```powershell
-$archive = 'gbk-mcp-0.2.0-windows-x86_64.zip'
+$archive = 'gbk-mcp-0.2.1-windows-x86_64.zip'
 $entry = Get-Content .\SHA256SUMS | Where-Object { ($_ -split '\s+', 2)[1] -eq $archive }
 if (-not $entry) { throw 'SHA256SUMS 中缺少目标 ZIP' }
 $expected = ($entry -split '\s+')[0]
@@ -52,8 +52,8 @@ Expand-Archive -LiteralPath ".\$archive" -DestinationPath 'C:\tools\gbk-mcp'
 `SHA256SUMS` 中对应文件名的摘要比较。例如 macOS：
 
 ```sh
-shasum -a 256 gbk-mcp-0.2.0-darwin-aarch64.zip
-unzip gbk-mcp-0.2.0-darwin-aarch64.zip -d "$HOME/tools/gbk-mcp"
+shasum -a 256 gbk-mcp-0.2.1-darwin-aarch64.zip
+unzip gbk-mcp-0.2.1-darwin-aarch64.zip -d "$HOME/tools/gbk-mcp"
 chmod +x "$HOME/tools/gbk-mcp/gbk-mcp"
 "$HOME/tools/gbk-mcp/gbk-mcp" --version
 ```

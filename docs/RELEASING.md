@@ -18,8 +18,8 @@
 确认代码和文档已提交、远端分支已同步，然后执行：
 
 ```sh
-git tag -a v0.2.0 -m "Release v0.2.0"
-git push origin v0.2.0
+git tag -a v0.2.1 -m "Release v0.2.1"
+git push origin v0.2.1
 ```
 
 `.github/workflows/release.yml` 校验标签与 Cargo 版本一致，构建以下目标：
@@ -47,7 +47,7 @@ CI 安装固定版本 Claude Code 是开发验证依赖，不是插件运行时�
 
 ## 0.2.1 GUI ZIP
 
-0.2.1 仍处于开发状态，本次适配不创建标签或 Release。后续标签工作流每个平台
+0.2.1 标签工作流每个平台
 额外执行 `python scripts/package_plugin.py --format plugin-zip`，生成
 `gbk-mcp-0.2.1-claude-plugin-gui-<平台>.zip`。统一检查九个包（三个 MCP、三个
 marketplace、三个 GUI ZIP）和 SHA256SUMS，全部齐全才允许发布；已有 v0.2.0
@@ -57,7 +57,7 @@ CI 运行 `python scripts/test_package_plugin.py` 验证布局及权限，再分
 `python scripts/plugin_smoke.py --archive PATH` 验证两个真实压缩包；`--archive-dir`
 仅用于目录内恰好一个插件包时。Desktop GUI 验证状态另见 VALIDATION.md。
 
-## 检查发布状态
+## 按需检查发布状态
 
 ```sh
 gh run list --workflow release.yml
@@ -70,3 +70,6 @@ gh release view v0.2.0 --repo JAX1024Dev/MCP-GBK --json url,tagName,assets
 失败时查看 `gh run view RUN_ID --log-failed`，修复构建问题并重新触发失败的
 工作流。已发布标签不应移动或覆盖；代码有变化应增加补丁版本。工作流通过
 GitHub 提供的 `GITHUB_TOKEN` 发布，不在仓库或示例中保存个人访问令牌。
+
+
+v0.2.1 按用户要求仅执行发布，不进行发布后的版本或附件验证，也不下载发布包复测。

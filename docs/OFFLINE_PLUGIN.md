@@ -3,11 +3,11 @@
 适用于 Claude Code 2.1.308+。每个包都是携带原生程序、Skill 和默认 Hook 的完整
 本地 marketplace；安装和启动不会下载插件依赖。模型连接按现有网络配置运行。
 
-| 平台 | v0.2.0 插件包 |
+| 平台 | v0.2.1 插件包 |
 | --- | --- |
-| Windows x64 | `gbk-mcp-0.2.0-claude-plugin-windows-x86_64.zip` |
-| Linux x64（GNU/glibc） | `gbk-mcp-0.2.0-claude-plugin-linux-x86_64.tar.gz` |
-| macOS Apple Silicon | `gbk-mcp-0.2.0-claude-plugin-darwin-aarch64.tar.gz` |
+| Windows x64 | `gbk-mcp-0.2.1-claude-plugin-windows-x86_64.zip` |
+| Linux x64（GNU/glibc） | `gbk-mcp-0.2.1-claude-plugin-linux-x86_64.tar.gz` |
+| macOS Apple Silicon | `gbk-mcp-0.2.1-claude-plugin-darwin-aarch64.tar.gz` |
 
 希望直接在 Desktop Code 上传 ZIP，可使用 0.2.1 的[GUI 专用包](GUI_PLUGIN.md)。
 本页介绍原有 marketplace 包；两种格式不可互相替代上传。
@@ -18,7 +18,7 @@
 所在目录执行；压缩包内已经有顶层 `gbk-plugin/`：
 
 ```powershell
-$archive = 'gbk-mcp-0.2.0-claude-plugin-windows-x86_64.zip'
+$archive = 'gbk-mcp-0.2.1-claude-plugin-windows-x86_64.zip'
 $entry = Get-Content .\SHA256SUMS | Where-Object { ($_ -split '\s+', 2)[1] -eq $archive }
 if (-not $entry) { throw '校验清单缺少目标包' }
 if ((Get-FileHash -LiteralPath $archive -Algorithm SHA256).Hash -ne ($entry -split '\s+')[0]) { throw 'SHA-256 不一致' }
@@ -34,10 +34,10 @@ macOS 使用 `shasum -a 256`，Linux 使用 `sha256sum`，将结果与 `SHA256SU
 
 ```sh
 # macOS Apple Silicon
-archive=gbk-mcp-0.2.0-claude-plugin-darwin-aarch64.tar.gz
+archive=gbk-mcp-0.2.1-claude-plugin-darwin-aarch64.tar.gz
 shasum -a 256 "$archive"
 # Linux x64 则使用下面两行替代上面两行
-# archive=gbk-mcp-0.2.0-claude-plugin-linux-x86_64.tar.gz
+# archive=gbk-mcp-0.2.1-claude-plugin-linux-x86_64.tar.gz
 # sha256sum "$archive"
 
 mkdir -p "$HOME/.local/share/gbk-mcp"
