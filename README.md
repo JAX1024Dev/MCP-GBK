@@ -8,6 +8,11 @@
 
 ## 下载与安装
 
+0.2.0 的 Hook 与 Windows 离线插件已实现，可从源码构建或在
+[CI 构建产物](https://github.com/JAX1024Dev/MCP-GBK/actions/workflows/ci.yml) 的
+`gbk-mcp-Windows` 中取得完整 ZIP 和 SHA256SUMS。0.2.0 尚未创建 GitHub Release；
+安装方式见 [离线插件指南](docs/OFFLINE_PLUGIN.md)。
+
 首版为 **v0.1.0**。从 [GitHub Releases](https://github.com/JAX1024Dev/MCP-GBK/releases/tag/v0.1.0)
 下载平台 ZIP 和 `SHA256SUMS`，核对 SHA-256 后解压：
 

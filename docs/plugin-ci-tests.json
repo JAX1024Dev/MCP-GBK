@@ -1,0 +1,222 @@
+{
+  "run_url": "https://github.com/JAX1024Dev/MCP-GBK/actions/runs/39971867188",
+  "commit": "533d2101f2a43378b7086941afc2393f20454260",
+  "platforms": {
+    "windows": {
+      "passed": true,
+      "claude_version": "2.1.308 (Claude Code)",
+      "platform": "win32",
+      "native_hook_ms": {
+        "median": 8.824199999992288,
+        "max": 10.093600000004699
+      },
+      "isolated_install_update_uninstall": true,
+      "cases": [
+        {
+          "variant": "normal",
+          "passed": true,
+          "scripted_model": true,
+          "tool_calls": [
+            {
+              "lane": "main",
+              "tool": "Read"
+            },
+            {
+              "lane": "main",
+              "tool": "mcp__plugin_gbk-mcp_gbk__read_file"
+            },
+            {
+              "lane": "main",
+              "tool": "mcp__plugin_gbk-mcp_gbk__edit_file"
+            },
+            {
+              "lane": "main",
+              "tool": "mcp__plugin_gbk-mcp_gbk__read_file"
+            },
+            {
+              "lane": "main",
+              "tool": "Agent"
+            },
+            {
+              "lane": "child",
+              "tool": "Read"
+            },
+            {
+              "lane": "child",
+              "tool": "mcp__plugin_gbk-mcp_gbk__read_file"
+            }
+          ],
+          "child_requests": 3
+        },
+        {
+          "variant": "missing",
+          "passed": true,
+          "scripted_model": true,
+          "tool_calls": [
+            {
+              "lane": "main",
+              "tool": "Read"
+            }
+          ],
+          "child_requests": 0
+        },
+        {
+          "variant": "timeout",
+          "passed": true,
+          "scripted_model": true,
+          "tool_calls": [
+            {
+              "lane": "main",
+              "tool": "Read"
+            }
+          ],
+          "child_requests": 0
+        }
+      ]
+    },
+    "linux": {
+      "passed": true,
+      "claude_version": "2.1.308 (Claude Code)",
+      "platform": "linux",
+      "native_hook_ms": {
+        "median": 1.5007430000011368,
+        "max": 2.195190999998431
+      },
+      "isolated_install_update_uninstall": true,
+      "cases": [
+        {
+          "variant": "normal",
+          "passed": true,
+          "scripted_model": true,
+          "tool_calls": [
+            {
+              "lane": "main",
+              "tool": "Read"
+            },
+            {
+              "lane": "main",
+              "tool": "mcp__plugin_gbk-mcp_gbk__read_file"
+            },
+            {
+              "lane": "main",
+              "tool": "mcp__plugin_gbk-mcp_gbk__edit_file"
+            },
+            {
+              "lane": "main",
+              "tool": "mcp__plugin_gbk-mcp_gbk__read_file"
+            },
+            {
+              "lane": "main",
+              "tool": "Agent"
+            },
+            {
+              "lane": "child",
+              "tool": "Read"
+            },
+            {
+              "lane": "child",
+              "tool": "mcp__plugin_gbk-mcp_gbk__read_file"
+            }
+          ],
+          "child_requests": 3
+        },
+        {
+          "variant": "missing",
+          "passed": true,
+          "scripted_model": true,
+          "tool_calls": [
+            {
+              "lane": "main",
+              "tool": "Read"
+            }
+          ],
+          "child_requests": 0
+        },
+        {
+          "variant": "timeout",
+          "passed": true,
+          "scripted_model": true,
+          "tool_calls": [
+            {
+              "lane": "main",
+              "tool": "Read"
+            }
+          ],
+          "child_requests": 0
+        }
+      ]
+    },
+    "macos": {
+      "passed": true,
+      "claude_version": "2.1.308 (Claude Code)",
+      "platform": "darwin",
+      "native_hook_ms": {
+        "median": 3.2313330000022233,
+        "max": 4.736707999995815
+      },
+      "isolated_install_update_uninstall": true,
+      "cases": [
+        {
+          "variant": "normal",
+          "passed": true,
+          "scripted_model": true,
+          "tool_calls": [
+            {
+              "lane": "main",
+              "tool": "Read"
+            },
+            {
+              "lane": "main",
+              "tool": "mcp__plugin_gbk-mcp_gbk__read_file"
+            },
+            {
+              "lane": "main",
+              "tool": "mcp__plugin_gbk-mcp_gbk__edit_file"
+            },
+            {
+              "lane": "main",
+              "tool": "mcp__plugin_gbk-mcp_gbk__read_file"
+            },
+            {
+              "lane": "main",
+              "tool": "Agent"
+            },
+            {
+              "lane": "child",
+              "tool": "Read"
+            },
+            {
+              "lane": "child",
+              "tool": "mcp__plugin_gbk-mcp_gbk__read_file"
+            }
+          ],
+          "child_requests": 3
+        },
+        {
+          "variant": "missing",
+          "passed": true,
+          "scripted_model": true,
+          "tool_calls": [
+            {
+              "lane": "main",
+              "tool": "Read"
+            }
+          ],
+          "child_requests": 0
+        },
+        {
+          "variant": "timeout",
+          "passed": true,
+          "scripted_model": true,
+          "tool_calls": [
+            {
+              "lane": "main",
+              "tool": "Read"
+            }
+          ],
+          "child_requests": 0
+        }
+      ]
+    }
+  }
+}

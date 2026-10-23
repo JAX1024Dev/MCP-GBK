@@ -22,9 +22,24 @@
 `--live` 才额外验证真实模型选择行为。原始日志保留在被忽略的
 `benchmark-results/plugin-live/`，不随源码提交。
 
-Windows 的原生 Hook、junction、大小写、中文空格及长路径，以及完整 PE 离线
-包由新增 CI 作业验证，远端结果待本次实现推送后补充。以下历史性能和客户端
-记录来自 0.1.0，不能直接视为 0.2.0 性能复测。
+最终代码提交 `533d210` 的 [三平台 CI](https://github.com/JAX1024Dev/MCP-GBK/actions/runs/39971867188)
+全部通过，覆盖格式、clippy、MCP/Hook 单元测试、真实 stdio、插件隔离安装与
+自动加载、主/子代理拦截、失败阻止、release 构建和打包：
+
+| 平台 | MCP / Hook 测试 | 原生 Hook 子进程中位耗时 |
+| --- | --- | --- |
+| Windows x64 / MSVC | 18 / 7 项通过 | 8.82 ms |
+| Linux x64 / GNU | 17 / 7 项通过 | 1.50 ms |
+| macOS | 17 / 7 项通过 | 3.23 ms |
+
+Windows 另外验证中文空格、大小写、长路径和 junction。大小写兼容还核实目录
+身份，无法核实时拒绝，避免把不同目录扩展为 root。Windows CI 生成了完整
+x64 PE 离线插件 ZIP 及 SHA256SUMS，插件只在一处声明默认 Hook。
+远端脱敏摘要见 [plugin-ci-tests.json](plugin-ci-tests.json)。上述计时含 debug
+进程启动，采样 20 次；CI 的模型是本地模拟服务，真实模型选择行为单独由前述
+本机 `--live` 验证，不将二者混同。
+
+以下历史性能和客户端记录来自 0.1.0，不能直接视为 0.2.0 性能复测。
 
 ## 功能与协议
 
