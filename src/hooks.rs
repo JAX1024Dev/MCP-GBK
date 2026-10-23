@@ -147,13 +147,20 @@ pub fn evaluate(root: &Path, kind: HookKind, input: &[u8]) -> Result<Option<Valu
     for ancestor in candidate.ancestors() {
         match fs::symlink_metadata(ancestor) {
             Ok(meta) if is_link(&meta) => {
-                let located_inside = ancestor.ancestors().any(|p| {
-                    p.canonicalize()
-                        .is_ok_and(|p| path_is_within(&p, &ws.root) && path_is_within(&ws.root, &p))
-                });
-                let points_inside = ancestor
-                    .canonicalize()
-                    .is_ok_and(|p| path_is_within(&p, &ws.root));
+                let mut located_inside = false;
+                for parent in ancestor.ancestors() {
+                    if let Ok(canonical) = parent.canonicalize()
+                        && path_is_within(&canonical, &ws.root)?
+                        && path_is_within(&ws.root, &canonical)?
+                    {
+                        located_inside = true;
+                        break;
+                    }
+                }
+                let points_inside = match ancestor.canonicalize() {
+                    Ok(canonical) => path_is_within(&canonical, &ws.root)?,
+                    Err(_) => false,
+                };
                 if located_inside || points_inside {
                     return Err(invalid(
                         "Links and junctions involving the protected root are refused",

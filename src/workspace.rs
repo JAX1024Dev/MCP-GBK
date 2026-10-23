@@ -86,7 +86,7 @@ impl Workspace {
                 format!("Path not found: {path}"),
             ));
         };
-        if !path_is_within(&resolved, self.root.as_ref()) {
+        if !path_is_within(&resolved, self.root.as_ref())? {
             return Err(AppError::new(
                 "outside_root",
                 "Path escapes the configured workspace root",
@@ -98,9 +98,8 @@ impl Workspace {
                 && is_link(&metadata)
             {
                 // Root ancestors may be OS aliases (/var -> /private/var on macOS).
-                if ancestor
-                    .canonicalize()
-                    .is_ok_and(|p| path_is_within(&p, self.root.as_ref()))
+                if let Ok(canonical) = ancestor.canonicalize()
+                    && path_is_within(&canonical, self.root.as_ref())?
                 {
                     return Err(AppError::new(
                         "symlink_not_allowed",
@@ -127,17 +126,20 @@ impl Workspace {
 }
 
 /// Compare canonical path components using the platform's case semantics.
-pub fn path_is_within(path: &Path, root: &Path) -> bool {
+pub fn path_is_within(path: &Path, root: &Path) -> Result<bool> {
+    if path.starts_with(root) {
+        return Ok(true);
+    }
     #[cfg(not(windows))]
     {
-        path.starts_with(root)
+        Ok(false)
     }
     #[cfg(windows)]
     {
         use std::os::windows::ffi::OsStrExt;
         use windows_sys::Win32::Globalization::{CSTR_EQUAL, CompareStringOrdinal};
         let mut parts = path.components();
-        root.components().all(|expected| {
+        let same_spelling = root.components().all(|expected| {
             let Some(actual) = parts.next() else {
                 return false;
             };
@@ -148,8 +150,38 @@ pub fn path_is_within(path: &Path, root: &Path) -> bool {
                 CompareStringOrdinal(a.as_ptr(), a.len() as i32, b.as_ptr(), b.len() as i32, 1)
                     == CSTR_EQUAL
             }
-        })
+        });
+        if !same_spelling {
+            return Ok(false);
+        }
+        // NTFS can enable case sensitivity per directory. Case folding alone
+        // must not expand the root into a distinct, similarly named directory.
+        let prefix: PathBuf = path.components().take(root.components().count()).collect();
+        Ok(directory_identity(&prefix)? == directory_identity(root)?)
     }
+}
+
+#[cfg(windows)]
+fn directory_identity(path: &Path) -> Result<(u32, u32, u32)> {
+    use std::os::windows::{fs::OpenOptionsExt, io::AsRawHandle};
+    use windows_sys::Win32::Storage::FileSystem::{
+        BY_HANDLE_FILE_INFORMATION, FILE_FLAG_BACKUP_SEMANTICS, FILE_READ_ATTRIBUTES,
+        GetFileInformationByHandle,
+    };
+    let file = fs::OpenOptions::new()
+        .read(true)
+        .access_mode(FILE_READ_ATTRIBUTES)
+        .custom_flags(FILE_FLAG_BACKUP_SEMANTICS)
+        .open(path)?;
+    let mut info: BY_HANDLE_FILE_INFORMATION = unsafe { std::mem::zeroed() };
+    if unsafe { GetFileInformationByHandle(file.as_raw_handle(), &mut info) } == 0 {
+        return Err(std::io::Error::last_os_error().into());
+    }
+    Ok((
+        info.dwVolumeSerialNumber,
+        info.nFileIndexHigh,
+        info.nFileIndexLow,
+    ))
 }
 
 pub fn is_link(metadata: &fs::Metadata) -> bool {

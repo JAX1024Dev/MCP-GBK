@@ -351,6 +351,9 @@ fn windows_case_unicode_spaces_long_paths_and_junctions() {
         "write_file",
     );
     let mixed_case = root.join("file.txt").to_string_lossy().to_uppercase();
+    let canonical = root.canonicalize().unwrap();
+    let case_alias = std::path::PathBuf::from(canonical.to_string_lossy().to_uppercase());
+    assert!(gbk_mcp::workspace::path_is_within(&case_alias.join("file.txt"), &canonical).unwrap());
     rejected(
         call(
             &root,
