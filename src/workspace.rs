@@ -86,7 +86,7 @@ impl Workspace {
                 format!("Path not found: {path}"),
             ));
         };
-        if !resolved.starts_with(self.root.as_ref()) {
+        if !path_is_within(&resolved, self.root.as_ref()) {
             return Err(AppError::new(
                 "outside_root",
                 "Path escapes the configured workspace root",
@@ -100,7 +100,7 @@ impl Workspace {
                 // Root ancestors may be OS aliases (/var -> /private/var on macOS).
                 if ancestor
                     .canonicalize()
-                    .is_ok_and(|p| p.starts_with(self.root.as_ref()))
+                    .is_ok_and(|p| path_is_within(&p, self.root.as_ref()))
                 {
                     return Err(AppError::new(
                         "symlink_not_allowed",
@@ -123,6 +123,32 @@ impl Workspace {
         } else {
             relative
         }
+    }
+}
+
+/// Compare canonical path components using the platform's case semantics.
+pub fn path_is_within(path: &Path, root: &Path) -> bool {
+    #[cfg(not(windows))]
+    {
+        path.starts_with(root)
+    }
+    #[cfg(windows)]
+    {
+        use std::os::windows::ffi::OsStrExt;
+        use windows_sys::Win32::Globalization::{CSTR_EQUAL, CompareStringOrdinal};
+        let mut parts = path.components();
+        root.components().all(|expected| {
+            let Some(actual) = parts.next() else {
+                return false;
+            };
+            let a: Vec<u16> = actual.as_os_str().encode_wide().collect();
+            let b: Vec<u16> = expected.as_os_str().encode_wide().collect();
+            // Canonical Windows paths contain at most 32767 UTF-16 code units.
+            unsafe {
+                CompareStringOrdinal(a.as_ptr(), a.len() as i32, b.as_ptr(), b.len() as i32, 1)
+                    == CSTR_EQUAL
+            }
+        })
     }
 }
 

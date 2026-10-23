@@ -2,6 +2,7 @@ pub mod control;
 pub mod encoding;
 pub mod error;
 pub mod files;
+pub mod hooks;
 pub mod search;
 pub mod server;
 pub mod types;

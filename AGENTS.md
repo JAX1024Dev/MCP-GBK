@@ -6,9 +6,10 @@ Five stdio MCP tools: `read_file`, `write_file`, `edit_file`, `glob`, and `grep`
 
 - `src/server.rs` and `src/types.rs`: MCP handlers, schemas, and request types.
 - `src/encoding.rs`: strict UTF-8/GBK decoding and byte boundaries.
+- `src/hooks.rs`: Claude Hook decisions; `plugins/gbk-mcp/`: offline plugin templates.
 - `src/files.rs` and `src/workspace.rs`: file operations, revision checks, atomic commits, and workspace confinement.
 - `src/search.rs` and `src/control.rs`: parallel traversal, matching, limits, and cancellation.
-- `tests/core.rs`: integration tests; `scripts/`: protocol smoke tests, benchmarks, and packaging.
+- `tests/`: MCP and Hook tests; `scripts/`: smoke tests, benchmarks, and packaging.
 - `examples/`: Claude/Codex configuration and consumer instruction snippets; `docs/`: validation records.
 - `third-party-licenses/` and `THIRD_PARTY_NOTICES.md`: dependency license records.
 
@@ -34,7 +35,7 @@ Follow Rust 2024 conventions and default rustfmt formatting, including four-spac
 
 ## Testing Guidelines
 
-Use Rust's `#[test]` and `#[tokio::test]` with temporary fixtures. Name tests after observable behavior. Cover GBK/UTF-8 ambiguity, invalid bytes, BOM/CRLF preservation, revision conflicts, workspace boundaries, and search cancellation/limits. Assert original bytes where preservation matters. Run `cargo test --locked --test core` for focused integration checks. Live Agent checks require installed, authenticated clients and consume model quota.
+Use `#[test]` and `#[tokio::test]` with temporary fixtures and behavior-based names. Cover encoding ambiguity, invalid bytes, BOM/CRLF preservation, conflicts, path boundaries, cancellation, limits, and Hook decisions. Assert original bytes where preservation matters. `scripts/plugin_smoke.py --binary target/debug/gbk-mcp` tests the real client with a local scripted model; `--live` additionally requires authentication and consumes quota.
 
 ## Commit & Pull Request Guidelines
 

@@ -34,6 +34,11 @@ git push origin v0.1.0
 当前版本说明，再创建 GitHub Release。发布包包含程序、安装和架构说明、
 客户端示例以及项目和依赖许可证。源代码归档由 GitHub 自动提供。
 
+从 0.2.0 起，Windows 作业另生成带默认 Hook 的离线插件 ZIP，命令为
+`python scripts/package_plugin.py --binary target/release/gbk-mcp.exe`；指定 target
+构建时使用相应 target 子目录。插件与 Cargo 版本必须一致。CI 在开发环境安装
+固定版本 Claude Code 运行隔离测试，这不是插件用户的运行时下载依赖。
+
 ## 检查发布状态
 
 ```sh

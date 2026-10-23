@@ -1,0 +1,84 @@
+{
+  "passed": true,
+  "claude_version": "2.1.308 (Claude Code)",
+  "platform": "darwin",
+  "native_hook_ms": {
+    "median": 3.347624999999965,
+    "max": 4.096083999999944
+  },
+  "isolated_install_update_uninstall": true,
+  "cases": [
+    {
+      "variant": "normal",
+      "passed": true,
+      "scripted_model": true,
+      "tool_calls": [
+        {
+          "lane": "main",
+          "tool": "Read"
+        },
+        {
+          "lane": "main",
+          "tool": "mcp__plugin_gbk-mcp_gbk__read_file"
+        },
+        {
+          "lane": "main",
+          "tool": "mcp__plugin_gbk-mcp_gbk__edit_file"
+        },
+        {
+          "lane": "main",
+          "tool": "mcp__plugin_gbk-mcp_gbk__read_file"
+        },
+        {
+          "lane": "main",
+          "tool": "Agent"
+        },
+        {
+          "lane": "child",
+          "tool": "Read"
+        },
+        {
+          "lane": "child",
+          "tool": "mcp__plugin_gbk-mcp_gbk__read_file"
+        }
+      ],
+      "child_requests": 3
+    },
+    {
+      "variant": "missing",
+      "passed": true,
+      "scripted_model": true,
+      "tool_calls": [
+        {
+          "lane": "main",
+          "tool": "Read"
+        }
+      ],
+      "child_requests": 0
+    },
+    {
+      "variant": "timeout",
+      "passed": true,
+      "scripted_model": true,
+      "tool_calls": [
+        {
+          "lane": "main",
+          "tool": "Read"
+        }
+      ],
+      "child_requests": 0
+    },
+    {
+      "passed": true,
+      "scripted_model": false,
+      "gbk_bytes_preserved": true,
+      "tool_calls": [
+        "ToolSearch",
+        "Read",
+        "mcp__plugin_gbk-mcp_gbk__read_file",
+        "mcp__plugin_gbk-mcp_gbk__edit_file",
+        "mcp__plugin_gbk-mcp_gbk__read_file"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,9 @@
+{
+  "name": "gbk-mcp",
+  "version": "0.2.0",
+  "description": "Encoding-preserving GBK/UTF-8 file tools with default text-operation hooks. Windows x64 offline plugin.",
+  "author": { "name": "JAX1024Dev" },
+  "repository": "https://github.com/JAX1024Dev/MCP-GBK",
+  "homepage": "https://github.com/JAX1024Dev/MCP-GBK",
+  "license": "MIT"
+}

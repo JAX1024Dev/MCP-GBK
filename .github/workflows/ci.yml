@@ -26,8 +26,20 @@ jobs:
       - run: cargo test --locked
       - run: cargo build --locked
       - run: python scripts/smoke_test.py --binary target/debug/gbk-mcp${{ runner.os == 'Windows' && '.exe' || '' }}
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - run: npm install --global @anthropic-ai/claude-code@2.1.308
+      - run: python scripts/plugin_smoke.py --binary target/debug/gbk-mcp${{ runner.os == 'Windows' && '.exe' || '' }}
+      - uses: actions/upload-artifact@v4
+        with:
+          name: gbk-plugin-check-${{ runner.os }}
+          path: benchmark-results/plugin/summary.json
+          if-no-files-found: error
       - run: cargo build --release --locked
       - run: python scripts/package.py
+      - if: runner.os == 'Windows'
+        run: python scripts/package_plugin.py --binary target/release/gbk-mcp.exe
       - uses: actions/upload-artifact@v4
         with:
           name: gbk-mcp-${{ runner.os }}

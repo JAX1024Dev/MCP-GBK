@@ -1,0 +1,9 @@
+{
+  "mcpServers": {
+    "gbk": {
+      "type": "stdio",
+      "command": "${CLAUDE_PLUGIN_ROOT}/bin/gbk-mcp.exe",
+      "args": ["--root", "${CLAUDE_PROJECT_DIR}"]
+    }
+  }
+}

@@ -1,0 +1,31 @@
+{
+  "description": "Route workspace text operations through GBK MCP without decoding files in hooks.",
+  "hooks": {
+    "SessionStart": [{
+      "hooks": [{
+        "type": "command",
+        "command": "${CLAUDE_PLUGIN_ROOT}/bin/gbk-mcp.exe",
+        "args": ["--root", "${CLAUDE_PROJECT_DIR}", "--hook", "session-start"],
+        "timeout": 5
+      }]
+    }],
+    "SubagentStart": [{
+      "hooks": [{
+        "type": "command",
+        "command": "${CLAUDE_PLUGIN_ROOT}/bin/gbk-mcp.exe",
+        "args": ["--root", "${CLAUDE_PROJECT_DIR}", "--hook", "subagent-start"],
+        "timeout": 5
+      }]
+    }],
+    "PreToolUse": [{
+      "matcher": "^(Read|Edit|Write|Grep)$",
+      "hooks": [{
+        "type": "command",
+        "command": "${CLAUDE_PLUGIN_ROOT}/bin/gbk-mcp.exe",
+        "args": ["--root", "${CLAUDE_PROJECT_DIR}", "--hook", "pre-tool-use"],
+        "timeout": 5,
+        "onFailure": "block"
+      }]
+    }]
+  }
+}

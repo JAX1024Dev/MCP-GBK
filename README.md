@@ -40,6 +40,9 @@ Windows 使用 `target\release\gbk-mcp.exe`。直接启动后会等待 MCP 客�
 
 ## 文档导航
 
+- [Claude Hook 保护](docs/HOOKS.md)：0.2.0 的默认文本工具拦截和独立 MCP 配置。
+- [Windows 离线插件](docs/OFFLINE_PLUGIN.md)：自带 EXE、默认 Hook、本地 marketplace 安装。
+- [插件实施备忘](docs/CLAUDE_PLUGIN_PLAN.md)：已确认方案、验收要求和后续维护依据。
 - [安装与故障排查](docs/INSTALL.md)：下载校验、启动与 Agent 接入。
 - [架构与实现边界](docs/ARCHITECTURE.md)：编码、原字节编辑、提交与检索设计。
 - [验证记录](docs/VALIDATION.md)：实际功能、客户端和性能验证范围。

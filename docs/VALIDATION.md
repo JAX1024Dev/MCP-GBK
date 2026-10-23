@@ -2,6 +2,30 @@
 
 验证日期：2026-10-23，Asia/Shanghai。
 
+## 0.2.0 Hook 与插件验证
+
+在 macOS / Apple Silicon、Claude Code 2.1.308 上完成：
+
+- 原有 17 项 MCP 集成测试、新增 7 项 Hook 测试、格式、clippy 与真实 stdio
+  冒烟通过。Windows 目标交叉 clippy 通过；Hook 不启动 Tokio/MCP 服务。
+- 隔离配置下安装本地 marketplace 插件，不使用 `--plugin-dir` 也自动加载服务
+  和 Hook；安装、更新、卸载均通过，保留开发者原客户端配置。
+- 用仅监听回环地址的模拟模型驱动真实 Claude 执行器，确认主代理及子代理的
+  内置 Read 被拒绝，MCP 读改复读成功；EXE 缺失和 Hook 超时均阻止原操作。
+- 使用实际已认证模型另做使用闭环：内置 Read 被拒绝后自主选择 MCP 读取、
+  修改、复读，最终文件逐字节符合预期 GBK。真实模型验证使用正常客户端额度。
+- 20 次 debug 原生 Hook 子进程启动与处理的本机中位耗时约 3.35 ms、最大约
+  4.10 ms；含进程启动，不代表 Windows 性能，也不是百万文件查询基准。
+
+脱敏摘要见 [plugin-tests.json](plugin-tests.json)。脚本为
+`scripts/plugin_smoke.py --binary target/debug/gbk-mcp`；默认不访问外部模型，
+`--live` 才额外验证真实模型选择行为。原始日志保留在被忽略的
+`benchmark-results/plugin-live/`，不随源码提交。
+
+Windows 的原生 Hook、junction、大小写、中文空格及长路径，以及完整 PE 离线
+包由新增 CI 作业验证，远端结果待本次实现推送后补充。以下历史性能和客户端
+记录来自 0.1.0，不能直接视为 0.2.0 性能复测。
+
 ## 功能与协议
 
 在 macOS / Apple Silicon、Rust 1.99.1 上完成：

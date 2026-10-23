@@ -1,0 +1,30 @@
+{
+  "hooks": {
+    "SessionStart": [{
+      "hooks": [{
+        "type": "command",
+        "command": "C:/tools/gbk-mcp/gbk-mcp.exe",
+        "args": ["--root", "C:/project", "--hook", "session-start"],
+        "timeout": 5
+      }]
+    }],
+    "SubagentStart": [{
+      "hooks": [{
+        "type": "command",
+        "command": "C:/tools/gbk-mcp/gbk-mcp.exe",
+        "args": ["--root", "C:/project", "--hook", "subagent-start"],
+        "timeout": 5
+      }]
+    }],
+    "PreToolUse": [{
+      "matcher": "^(Read|Edit|Write|Grep)$",
+      "hooks": [{
+        "type": "command",
+        "command": "C:/tools/gbk-mcp/gbk-mcp.exe",
+        "args": ["--root", "C:/project", "--hook", "pre-tool-use"],
+        "timeout": 5,
+        "onFailure": "block"
+      }]
+    }]
+  }
+}

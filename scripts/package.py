@@ -13,6 +13,21 @@ TARGETS = {
 }
 
 
+def write_checksums(output):
+    archives = sorted(output.glob("gbk-mcp-*.zip"))
+    if not archives:
+        raise SystemExit("No release ZIPs found in output directory")
+    checksums = []
+    for archive in archives:
+        digest = hashlib.sha256()
+        with archive.open("rb") as source:
+            for chunk in iter(lambda: source.read(1024 * 1024), b""):
+                digest.update(chunk)
+        checksums.append(f"{digest.hexdigest()}  {archive.name}\n")
+    (output / "SHA256SUMS").write_text("".join(checksums), encoding="utf-8")
+    print("".join(checksums), end="")
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--target", choices=TARGETS, help="Cargo target used for the release build")
@@ -45,18 +60,7 @@ def main():
                         bundle.write(path, path.relative_to(root))
         print(archive)
 
-    archives = sorted(output.glob("gbk-mcp-*.zip"))
-    if not archives:
-        raise SystemExit("No release ZIPs found in dist/")
-    checksums = []
-    for archive in archives:
-        digest = hashlib.sha256()
-        with archive.open("rb") as source:
-            for chunk in iter(lambda: source.read(1024 * 1024), b""):
-                digest.update(chunk)
-        checksums.append(f"{digest.hexdigest()}  {archive.name}\n")
-    (output / "SHA256SUMS").write_text("".join(checksums), encoding="utf-8")
-    print("".join(checksums), end="")
+    write_checksums(output)
 
 
 if __name__ == "__main__":
