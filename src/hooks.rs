@@ -200,6 +200,7 @@ pub fn evaluate(root: &Path, kind: HookKind, input: &[u8]) -> Result<Option<Valu
         _ => unreachable!(),
     };
     Ok(Some(deny(format!(
-        "GBK protection: use the GBK MCP {replacement} tool for this workspace operation instead of built-in {tool}. This is a routing decision, not a file read or write. For existing files obtain revision from read_file before editing. If that MCP tool is missing, report the connection/tool-access problem to the user or parent agent; do not use Shell as a fallback."
+        "GBK protection: use the GBK MCP {replacement} tool instead of built-in {tool}. Pass this absolute target path to MCP: {}. This is a routing decision, not a file read or write. For existing files obtain revision from read_file before editing. If that MCP tool is missing, report the connection/tool-access problem to the user or parent agent; do not use Shell as a fallback.",
+        resolved.display()
     ))))
 }

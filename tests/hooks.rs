@@ -180,6 +180,23 @@ fn respects_outside_roots_and_resolves_relative_paths_from_event_cwd() {
         .is_none()
     );
     fs::create_dir(root.join("nested")).unwrap();
+    let nested_read = call(
+        &root,
+        HookKind::PreToolUse,
+        event(
+            "Read",
+            &root.join("nested"),
+            json!({"file_path":"file.txt"}),
+        ),
+    )
+    .unwrap();
+    let target = root.canonicalize().unwrap().join("nested").join("file.txt");
+    assert!(
+        nested_read["hookSpecificOutput"]["permissionDecisionReason"]
+            .as_str()
+            .unwrap()
+            .contains(target.to_str().unwrap())
+    );
     rejected(
         call(
             &root,

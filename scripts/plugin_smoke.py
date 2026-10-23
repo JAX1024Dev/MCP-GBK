@@ -10,6 +10,7 @@ import json
 import os
 from pathlib import Path
 import re
+import shutil
 import subprocess
 import sys
 import tempfile
@@ -24,7 +25,19 @@ BEFORE = "// 中文原文\r\nconst int value = 1;\r\n"
 
 
 def cli(command, root, env, timeout=120):
-    result = subprocess.run(["claude", *command], cwd=root, env=env,
+    executable = shutil.which("claude")
+    if not executable:
+        raise RuntimeError("Install Claude Code 2.1.308+ before running this developer test")
+    launcher = [executable]
+    if Path(executable).suffix.lower() in [".cmd", ".bat"]:
+        # npm on Windows exposes a CMD shim, which CreateProcess cannot resolve
+        # as an executable. Invoke its Node entrypoint directly; no shell parsing.
+        entrypoint = Path(executable).parent / "node_modules" / "@anthropic-ai" / "claude-code" / "cli.js"
+        node = shutil.which("node")
+        if not node or not entrypoint.is_file():
+            raise RuntimeError("Use a native Claude executable or an npm installation with cli.js and Node")
+        launcher = [node, str(entrypoint)]
+    result = subprocess.run([*launcher, *command], cwd=root, env=env,
                             capture_output=True, text=True, encoding="utf-8", timeout=timeout)
     if result.returncode:
         raise AssertionError(f"Claude command failed ({command[:3]}): {result.stdout[-4000:]} {result.stderr[-2000:]}")
