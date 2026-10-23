@@ -30,13 +30,23 @@ def cli(command, root, env, timeout=120):
         raise RuntimeError("Install Claude Code 2.1.308+ before running this developer test")
     launcher = [executable]
     if Path(executable).suffix.lower() in [".cmd", ".bat"]:
-        # npm on Windows exposes a CMD shim, which CreateProcess cannot resolve
-        # as an executable. Invoke its Node entrypoint directly; no shell parsing.
-        entrypoint = Path(executable).parent / "node_modules" / "@anthropic-ai" / "claude-code" / "cli.js"
-        node = shutil.which("node")
-        if not node or not entrypoint.is_file():
-            raise RuntimeError("Use a native Claude executable or an npm installation with cli.js and Node")
-        launcher = [node, str(entrypoint)]
+        # Resolve npm's declared bin instead of executing its CMD shim or assuming
+        # a cli.js layout. Some releases use a native binary/extensionless entry.
+        package = Path(executable).parent / "node_modules" / "@anthropic-ai" / "claude-code"
+        manifest = json.loads((package / "package.json").read_text(encoding="utf-8"))
+        declared = manifest["bin"]
+        entrypoint = package / (declared["claude"] if isinstance(declared, dict) else declared)
+        with entrypoint.open("rb") as source:
+            header = source.read(128)
+        if header.startswith(b"MZ"):
+            launcher = [str(entrypoint)]
+        elif b"node" in header.split(b"\n")[0] or entrypoint.suffix in [".js", ".cjs", ".mjs"]:
+            node = shutil.which("node")
+            if not node:
+                raise RuntimeError("The npm Claude developer client requires Node")
+            launcher = [node, str(entrypoint)]
+        else:
+            raise RuntimeError(f"Unsupported npm Claude entrypoint: {entrypoint}")
     result = subprocess.run([*launcher, *command], cwd=root, env=env,
                             capture_output=True, text=True, encoding="utf-8", timeout=timeout)
     if result.returncode:
