@@ -31,8 +31,9 @@ GUI 已验证。本次不支持 SSH、WSL、云端或跨系统同步后的运行
    作为 root，无需为每个项目重新安装。
 
 此入口是 Desktop 的本机安装流程，不依靠 claude.ai 账户插件同步，适用于使用
-API Key／第三方服务的 Code 会话。已在 macOS Desktop 3.6556.2 查看确认入口与
-本机安装实现；其他版本应以是否提供 **Upload local plugin** 为准。
+API Key／第三方服务的 Code 会话。已在 macOS Desktop 3.6556.2 完成真实上传、新装、替换、启停、卸载和 GBK
+读改复读验证；Windows/Linux 当前为原生 CLI/打包验证。其他客户端版本应以
+是否提供 **Upload local plugin** 为准。
 
 安装后在 Plugins 中查看版本、工具和启用状态；会话中的 `/mcp`、`/hooks` 可进一步
 检查 MCP 连接及三个默认 Hook。内置文本 Read/Edit/Write/Grep 被引导至 MCP，图片、

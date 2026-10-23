@@ -147,5 +147,331 @@
         }
       ]
     }
+  },
+  "desktop_gui": {
+    "date": "2026-10-24",
+    "platform": "macOS Apple Silicon",
+    "desktop_version": "3.6556.2",
+    "mode": "Code / This computer",
+    "model_auth": "existing third-party gateway",
+    "account_plugin_sync_required": false,
+    "terminal_install_commands_used": false,
+    "same_name_marketplace_replacement": true,
+    "disable_enable": true,
+    "remove_and_fresh_install": true,
+    "fresh_plugin_id": "gbk-mcp@local-desktop-app-uploads",
+    "version": "0.2.1",
+    "mcp_count": 1,
+    "skill_count": 1,
+    "hook_count": 3,
+    "executable_mode": "0755",
+    "project_path_contains_chinese_and_spaces": true,
+    "automatic_project_root": true,
+    "built_in_read_denied": true,
+    "mcp_read_edit_reread": true,
+    "gbk_and_crlf_bytes_preserved": true,
+    "other_platform_gui_tested": false
+  },
+  "native_ci": {
+    "commit": "1d946205d4120865c4b266a129a251a984879b4d",
+    "run_url": "https://github.com/JAX1024Dev/MCP-GBK/actions/runs/39981703316",
+    "platforms": {
+      "windows": {
+        "gui": {
+          "passed": true,
+          "claude_version": "2.1.308 (Claude Code)",
+          "platform": "win32",
+          "native_hook_ms": {
+            "median": 9.480999999993855,
+            "max": 13.837899999998626
+          },
+          "isolated_install_update_uninstall": true,
+          "packaged_archive": "gbk-mcp-0.2.1-claude-plugin-gui-windows-x86_64.zip",
+          "cases": [
+            {
+              "variant": "normal",
+              "passed": true,
+              "scripted_model": true,
+              "tool_calls": [
+                {
+                  "lane": "main",
+                  "tool": "Read"
+                },
+                {
+                  "lane": "main",
+                  "tool": "mcp__plugin_gbk-mcp_gbk__read_file"
+                },
+                {
+                  "lane": "main",
+                  "tool": "mcp__plugin_gbk-mcp_gbk__edit_file"
+                },
+                {
+                  "lane": "main",
+                  "tool": "mcp__plugin_gbk-mcp_gbk__read_file"
+                },
+                {
+                  "lane": "main",
+                  "tool": "Agent"
+                },
+                {
+                  "lane": "child",
+                  "tool": "Read"
+                },
+                {
+                  "lane": "child",
+                  "tool": "mcp__plugin_gbk-mcp_gbk__read_file"
+                }
+              ],
+              "child_requests": 3
+            },
+            {
+              "variant": "missing",
+              "passed": true,
+              "scripted_model": true,
+              "tool_calls": [
+                {
+                  "lane": "main",
+                  "tool": "Read"
+                }
+              ],
+              "child_requests": 0
+            },
+            {
+              "variant": "timeout",
+              "passed": true,
+              "scripted_model": true,
+              "tool_calls": [
+                {
+                  "lane": "main",
+                  "tool": "Read"
+                }
+              ],
+              "child_requests": 0
+            }
+          ]
+        },
+        "marketplace": {
+          "passed": true,
+          "claude_version": "2.1.308 (Claude Code)",
+          "platform": "win32",
+          "native_hook_ms": {
+            "median": 8.951800000033927,
+            "max": 15.889899999990575
+          },
+          "isolated_install_update_uninstall": true,
+          "packaged_archive": "gbk-mcp-0.2.1-claude-plugin-windows-x86_64.zip",
+          "cases": [
+            {
+              "variant": "normal",
+              "passed": true,
+              "scripted_model": true,
+              "tool_calls": [
+                {
+                  "lane": "main",
+                  "tool": "Read"
+                },
+                {
+                  "lane": "main",
+                  "tool": "mcp__plugin_gbk-mcp_gbk__read_file"
+                },
+                {
+                  "lane": "main",
+                  "tool": "mcp__plugin_gbk-mcp_gbk__edit_file"
+                },
+                {
+                  "lane": "main",
+                  "tool": "mcp__plugin_gbk-mcp_gbk__read_file"
+                },
+                {
+                  "lane": "main",
+                  "tool": "Agent"
+                },
+                {
+                  "lane": "child",
+                  "tool": "Read"
+                },
+                {
+                  "lane": "child",
+                  "tool": "mcp__plugin_gbk-mcp_gbk__read_file"
+                }
+              ],
+              "child_requests": 3
+            },
+            {
+              "variant": "missing",
+              "passed": true,
+              "scripted_model": true,
+              "tool_calls": [
+                {
+                  "lane": "main",
+                  "tool": "Read"
+                }
+              ],
+              "child_requests": 0
+            },
+            {
+              "variant": "timeout",
+              "passed": true,
+              "scripted_model": true,
+              "tool_calls": [
+                {
+                  "lane": "main",
+                  "tool": "Read"
+                }
+              ],
+              "child_requests": 0
+            }
+          ]
+        }
+      },
+      "linux": {
+        "gui": {
+          "passed": true,
+          "claude_version": "2.1.308 (Claude Code)",
+          "platform": "linux",
+          "native_hook_ms": {
+            "median": 1.2513120000079425,
+            "max": 1.58013499999754
+          },
+          "isolated_install_update_uninstall": true,
+          "packaged_archive": "gbk-mcp-0.2.1-claude-plugin-gui-linux-x86_64.zip",
+          "cases": [
+            {
+              "variant": "normal",
+              "passed": true,
+              "scripted_model": true,
+              "tool_calls": [
+                {
+                  "lane": "main",
+                  "tool": "Read"
+                },
+                {
+                  "lane": "main",
+                  "tool": "mcp__plugin_gbk-mcp_gbk__read_file"
+                },
+                {
+                  "lane": "main",
+                  "tool": "mcp__plugin_gbk-mcp_gbk__edit_file"
+                },
+                {
+                  "lane": "main",
+                  "tool": "mcp__plugin_gbk-mcp_gbk__read_file"
+                },
+                {
+                  "lane": "main",
+                  "tool": "Agent"
+                },
+                {
+                  "lane": "child",
+                  "tool": "Read"
+                },
+                {
+                  "lane": "child",
+                  "tool": "mcp__plugin_gbk-mcp_gbk__read_file"
+                }
+              ],
+              "child_requests": 3
+            },
+            {
+              "variant": "missing",
+              "passed": true,
+              "scripted_model": true,
+              "tool_calls": [
+                {
+                  "lane": "main",
+                  "tool": "Read"
+                }
+              ],
+              "child_requests": 0
+            },
+            {
+              "variant": "timeout",
+              "passed": true,
+              "scripted_model": true,
+              "tool_calls": [
+                {
+                  "lane": "main",
+                  "tool": "Read"
+                }
+              ],
+              "child_requests": 0
+            }
+          ]
+        },
+        "marketplace": {
+          "passed": true,
+          "claude_version": "2.1.308 (Claude Code)",
+          "platform": "linux",
+          "native_hook_ms": {
+            "median": 1.2593870000046081,
+            "max": 1.6050110000094264
+          },
+          "isolated_install_update_uninstall": true,
+          "packaged_archive": "gbk-mcp-0.2.1-claude-plugin-linux-x86_64.tar.gz",
+          "cases": [
+            {
+              "variant": "normal",
+              "passed": true,
+              "scripted_model": true,
+              "tool_calls": [
+                {
+                  "lane": "main",
+                  "tool": "Read"
+                },
+                {
+                  "lane": "main",
+                  "tool": "mcp__plugin_gbk-mcp_gbk__read_file"
+                },
+                {
+                  "lane": "main",
+                  "tool": "mcp__plugin_gbk-mcp_gbk__edit_file"
+                },
+                {
+                  "lane": "main",
+                  "tool": "mcp__plugin_gbk-mcp_gbk__read_file"
+                },
+                {
+                  "lane": "main",
+                  "tool": "Agent"
+                },
+                {
+                  "lane": "child",
+                  "tool": "Read"
+                },
+                {
+                  "lane": "child",
+                  "tool": "mcp__plugin_gbk-mcp_gbk__read_file"
+                }
+              ],
+              "child_requests": 3
+            },
+            {
+              "variant": "missing",
+              "passed": true,
+              "scripted_model": true,
+              "tool_calls": [
+                {
+                  "lane": "main",
+                  "tool": "Read"
+                }
+              ],
+              "child_requests": 0
+            },
+            {
+              "variant": "timeout",
+              "passed": true,
+              "scripted_model": true,
+              "tool_calls": [
+                {
+                  "lane": "main",
+                  "tool": "Read"
+                }
+              ],
+              "child_requests": 0
+            }
+          ]
+        }
+      }
+    }
   }
 }

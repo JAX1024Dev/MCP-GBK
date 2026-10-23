@@ -11,8 +11,25 @@
 
 五项打包契约测试通过，覆盖三平台 GUI 根目录布局、PE/ELF/Mach-O 架构匹配、
 默认 marketplace 兼容性、ZIP Unix 执行权限和路径越界拒绝。脱敏记录见
-[plugin-gui-tests.json](plugin-gui-tests.json)。CLI 测试不代替 Desktop GUI 验证，
-后者和三平台 CI 结果将在实际完成后补充；不自动创建 0.2.1 Release。
+[plugin-gui-tests.json](plugin-gui-tests.json)。不自动创建 0.2.1 Release。
+
+2026-10-24 在 macOS Desktop 3.6556.2 的 Code 模式使用原有第三方模型配置，
+完成真实 GUI 上传、从 marketplace 同名替换、停用／启用、移除及重新安装；新装
+来源为 `gbk-mcp@local-desktop-app-uploads`，版本 0.2.1，显示一个 MCP、一个 Skill
+和恰好三个 Hook。没有使用终端安装命令，没有依靠账户插件同步。
+
+从 GUI 选择中文、空格路径的临时项目并启动本机会话，确认自动 root；实际模型
+完成 MCP 查找、GBK 读取、带 revision 修改及复读。额外负向测试确认内置 Read
+被 PreToolUse 拒绝，随后 MCP 读取成功。另从文件系统逐字节核对 GBK 中文及
+CRLF 保留，安装后的程序权限为 0755。此次 GUI 程序来自本机构建，未模拟下载
+quarantine 或签名公证流程。macOS 本机格式、clippy、24 项 Rust 测试和 stdio
+冒烟均通过。
+
+提交 `1d94620` 的[原生 CI](https://github.com/JAX1024Dev/MCP-GBK/actions/runs/39981703316)
+中 Windows 和 Linux 已通过格式、clippy、Rust、stdio、五项打包测试及两个格式的
+完整 MCP/Hook 闭环，原生 GUI ZIP 已生成。macOS 托管 runner 暂仍排队；本机
+原生验证结果如上。Windows/Linux 尚未进行实际 Desktop GUI 操作，不能将 CLI
+回归写成 GUI 已通过。
 
 ## 0.2.0 三平台插件打包验证
 
