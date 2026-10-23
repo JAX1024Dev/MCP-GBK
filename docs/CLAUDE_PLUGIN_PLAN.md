@@ -78,3 +78,13 @@ gbk-mcp --root <项目目录> --hook pre-tool-use
 
 当前实现、命令和边界见 [Hook 指南](HOOKS.md) 与 [离线安装](OFFLINE_PLUGIN.md)；
 实际验证状态以 [验证记录](VALIDATION.md) 为准。
+
+
+## 0.2.0 三平台交付补充
+
+2026-10-23 确认扩展为 Windows x64、Linux x64 GNU/glibc、macOS Apple Silicon。
+复用 Rust 实现、插件模板和默认 Hook，打包时生成平台程序路径，不增加 Shell
+启动器或下载依赖。Windows 插件使用 ZIP，Unix 使用 tar.gz 保留可执行权限。
+三平台 CI 从最终压缩包解压后运行隔离安装及 Hook/MCP 闭环；通过后发布同一个
+v0.2.0 Release，包含三个 MCP ZIP、三个插件包及统一 SHA256SUMS。
+发布完成后只验证版本及附件存在，不下载已发布附件复测。

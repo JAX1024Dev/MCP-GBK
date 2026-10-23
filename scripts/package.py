@@ -14,9 +14,9 @@ TARGETS = {
 
 
 def write_checksums(output):
-    archives = sorted(output.glob("gbk-mcp-*.zip"))
+    archives = sorted([*output.glob("gbk-mcp-*.zip"), *output.glob("gbk-mcp-*.tar.gz")])
     if not archives:
-        raise SystemExit("No release ZIPs found in output directory")
+        raise SystemExit("No release archives found in output directory")
     checksums = []
     for archive in archives:
         digest = hashlib.sha256()
@@ -31,7 +31,7 @@ def write_checksums(output):
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--target", choices=TARGETS, help="Cargo target used for the release build")
-    parser.add_argument("--checksums-only", action="store_true", help="Hash existing ZIPs without building a package")
+    parser.add_argument("--checksums-only", action="store_true", help="Hash existing archives without building a package")
     args = parser.parse_args()
     root = Path(__file__).resolve().parent.parent
     output = root / "dist"

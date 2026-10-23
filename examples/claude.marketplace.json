@@ -1,10 +1,14 @@
 {
   "name": "jax1024dev-gbk",
-  "description": "Offline GBK MCP plugins with bundled Windows executables and default text protection hooks.",
-  "owner": { "name": "JAX1024Dev" },
-  "plugins": [{
-    "name": "gbk-mcp",
-    "source": "./plugins/gbk-mcp",
-    "description": "Offline GBK/UTF-8 file tools with default protection hooks for Windows x64."
-  }]
+  "description": "Offline GBK MCP plugins with bundled native executables and default text protection hooks.",
+  "owner": {
+    "name": "JAX1024Dev"
+  },
+  "plugins": [
+    {
+      "name": "gbk-mcp",
+      "source": "./plugins/gbk-mcp",
+      "description": "Offline GBK/UTF-8 file tools with default protection hooks for Windows x64, Linux x64 and macOS Apple Silicon."
+    }
+  ]
 }

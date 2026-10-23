@@ -8,19 +8,17 @@
 
 ## 下载与安装
 
-0.2.0 的 Hook 与 Windows 离线插件已实现，可从源码构建或在
-[CI 构建产物](https://github.com/JAX1024Dev/MCP-GBK/actions/workflows/ci.yml) 的
-`gbk-mcp-Windows` 中取得完整 ZIP 和 SHA256SUMS。0.2.0 尚未创建 GitHub Release；
-安装方式见 [离线插件指南](docs/OFFLINE_PLUGIN.md)。
+当前版本为 **v0.2.0**。从 [GitHub Releases](https://github.com/JAX1024Dev/MCP-GBK/releases/tag/v0.2.0)
+下载对应平台的包和 `SHA256SUMS`。独立 MCP 包适合 Claude、Codex 等客户端；
+Claude 插件包含同版本程序、Skill、本地 marketplace 和默认 Hook。
 
-首版为 **v0.1.0**。从 [GitHub Releases](https://github.com/JAX1024Dev/MCP-GBK/releases/tag/v0.1.0)
-下载平台 ZIP 和 `SHA256SUMS`，核对 SHA-256 后解压：
+| 平台 | 独立 MCP 包 | Claude 离线插件包 |
+| --- | --- | --- |
+| Windows x64（MSVC） | `gbk-mcp-0.2.0-windows-x86_64.zip` | `gbk-mcp-0.2.0-claude-plugin-windows-x86_64.zip` |
+| Linux x64（GNU/glibc） | `gbk-mcp-0.2.0-linux-x86_64.zip` | `gbk-mcp-0.2.0-claude-plugin-linux-x86_64.tar.gz` |
+| macOS Apple Silicon | `gbk-mcp-0.2.0-darwin-aarch64.zip` | `gbk-mcp-0.2.0-claude-plugin-darwin-aarch64.tar.gz` |
 
-| 平台 | 附件 |
-| --- | --- |
-| Windows x86_64（MSVC） | `gbk-mcp-0.1.0-windows-x86_64.zip` |
-| Linux x86_64（GNU） | `gbk-mcp-0.1.0-linux-x86_64.zip` |
-| macOS Apple Silicon | `gbk-mcp-0.1.0-darwin-aarch64.zip` |
+插件安装见 [离线插件指南](docs/OFFLINE_PLUGIN.md)。Unix 插件使用 tar.gz 保留执行权限。
 
 Windows 启动示例：
 
@@ -46,7 +44,7 @@ Windows 使用 `target\release\gbk-mcp.exe`。直接启动后会等待 MCP 客�
 ## 文档导航
 
 - [Claude Hook 保护](docs/HOOKS.md)：0.2.0 的默认文本工具拦截和独立 MCP 配置。
-- [Windows 离线插件](docs/OFFLINE_PLUGIN.md)：自带 EXE、默认 Hook、本地 marketplace 安装。
+- [三平台离线插件](docs/OFFLINE_PLUGIN.md)：自带原生程序、默认 Hook、本地 marketplace 安装。
 - [插件实施备忘](docs/CLAUDE_PLUGIN_PLAN.md)：已确认方案、验收要求和后续维护依据。
 - [安装与故障排查](docs/INSTALL.md)：下载校验、启动与 Agent 接入。
 - [架构与实现边界](docs/ARCHITECTURE.md)：编码、原字节编辑、提交与检索设计。

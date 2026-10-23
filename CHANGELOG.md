@@ -1,14 +1,16 @@
 # 变更记录
 
-## [0.2.0] — 未发布
+## [0.2.0] — 2026-10-23
 
 - 新增本地 Rust Hook 模式：SessionStart、SubagentStart 和 PreToolUse；不启动
   MCP、不联网、不修改文件或读取正文。
 - 默认保护 root 内的 Read/Edit/Write/Grep；保留特殊格式读取、Glob 和 Shell，
   路径及输入错误拒绝处理，MCP 调用不会递归拦截。
-- Windows x64 离线 Claude 插件：自带 EXE、Skill 和默认 Hook，通过本地
+- Windows x64、Linux x64 GNU 和 macOS Apple Silicon 离线 Claude 插件：
+  自带平台原生程序、Skill 和默认 Hook，通过本地
   marketplace 安装；新增独立 MCP Hook 配置、实施备忘、安装和保护说明。
-- 构建和打包支持离线插件 ZIP、许可证与统一 SHA256SUMS；新增 Hook 回归及
+- Windows 插件使用 ZIP，Linux/macOS 使用保留执行权限的 tar.gz；统一提供
+  三平台 MCP ZIP、插件包、许可证与 SHA256SUMS。新增 Hook 回归及
   隔离插件安装验证入口。
 
 ## [0.1.0] — 2026-10-23

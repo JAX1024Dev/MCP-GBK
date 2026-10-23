@@ -2,6 +2,19 @@
 
 验证日期：2026-10-23，Asia/Shanghai。
 
+## 0.2.0 三平台插件打包验证
+
+本次只扩展插件打包、配置生成、文档与 CI，不修改 Rust 工具或 Hook 逻辑。
+macOS 本机重新构建 0.2.0 release 程序，打包 tar.gz 后解压，使用真实 Claude
+2.1.308 与本地模拟模型完成隔离安装、更新、卸载、主/子代理 Read 拒绝、MCP
+读改复读、程序缺失和超时阻止；检查可执行权限及 MCP/Hook 的平台程序路径。
+脱敏结果见 [plugin-package-tests.json](plugin-package-tests.json)。
+
+PE/ELF/Mach-O 平台及架构检查通过正反例验证。三平台 CI 现从最终插件压缩包
+解压运行同一闭环，发布前以该次 CI 结果为准；下方旧 CI 记录保留其原始范围。
+v0.2.0 Release 要求三个 MCP ZIP、Windows 插件 ZIP、Linux/macOS 插件 tar.gz
+全部齐全及统一 SHA256SUMS。发布后仅核对版本及附件，不下载已发布包复测。
+
 ## 0.2.0 Hook 与插件验证
 
 在 macOS / Apple Silicon、Claude Code 2.1.308 上完成：

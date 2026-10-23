@@ -35,7 +35,7 @@ Follow Rust 2024 conventions and default rustfmt formatting, including four-spac
 
 ## Testing Guidelines
 
-Use `#[test]` and `#[tokio::test]` with temporary fixtures and behavior-based names. Cover encoding ambiguity, invalid bytes, BOM/CRLF preservation, conflicts, path boundaries, cancellation, limits, and Hook decisions. Assert original bytes where preservation matters. `scripts/plugin_smoke.py --binary target/debug/gbk-mcp` tests the real client with a local scripted model; `--live` additionally requires authentication and consumes quota.
+Use `#[test]` and `#[tokio::test]` with temporary fixtures and behavior-based names. Cover encoding ambiguity, invalid bytes, BOM/CRLF preservation, conflicts, path boundaries, cancellation, limits, and Hook decisions. Assert original bytes where preservation matters. `scripts/plugin_smoke.py --binary target/debug/gbk-mcp` tests the real client with a local scripted model; use `--archive-dir dist` instead to test an extracted release plugin; `--live` additionally requires authentication and consumes quota.
 
 ## Commit & Pull Request Guidelines
 

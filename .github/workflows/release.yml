@@ -52,12 +52,13 @@ jobs:
           key: release-${{ matrix.target }}
       - run: cargo build --release --locked --target ${{ matrix.target }}
       - run: python scripts/package.py --target ${{ matrix.target }}
-      - if: runner.os == 'Windows'
-        run: python scripts/package_plugin.py --binary target/${{ matrix.target }}/release/gbk-mcp.exe
+      - run: python scripts/package_plugin.py --target ${{ matrix.target }}
       - uses: actions/upload-artifact@v4
         with:
           name: release-${{ matrix.target }}
-          path: dist/*.zip
+          path: |
+            dist/*.zip
+            dist/*.tar.gz
           if-no-files-found: error
 
   publish:
@@ -76,7 +77,7 @@ jobs:
           path: dist
           merge-multiple: true
       - run: python scripts/package.py --checksums-only
-      - name: Extract release notes
+      - name: Verify six packages and extract release notes
         env:
           RELEASE_TAG: ${{ github.ref_name }}
         run: |
@@ -84,6 +85,16 @@ jobs:
           import os, re
           from pathlib import Path
           version = os.environ['RELEASE_TAG'][1:]
+          expected = {
+              f'gbk-mcp-{version}-{platform}.zip'
+              for platform in ['windows-x86_64', 'linux-x86_64', 'darwin-aarch64']
+          } | {
+              f'gbk-mcp-{version}-claude-plugin-{platform}.{extension}'
+              for platform, extension in [('windows-x86_64', 'zip'), ('linux-x86_64', 'tar.gz'), ('darwin-aarch64', 'tar.gz')]
+          }
+          actual = {p.name for p in Path('dist').iterdir() if p.name.endswith(('.zip', '.tar.gz'))}
+          if actual != expected:
+              raise SystemExit(f'Release packages differ: missing={expected - actual}, extra={actual - expected}')
           changelog = Path('CHANGELOG.md').read_text(encoding='utf-8')
           section = re.search(r'^## \[' + re.escape(version) + r'\][^\n]*\n(.*?)(?=^## |\Z)', changelog, re.M | re.S)
           if section is None:
@@ -94,4 +105,4 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
           RELEASE_TAG: ${{ github.ref_name }}
-        run: gh release create "$RELEASE_TAG" dist/*.zip dist/SHA256SUMS --verify-tag --title "GBK MCP $RELEASE_TAG" --notes-file release-notes.md
+        run: gh release create "$RELEASE_TAG" dist/*.zip dist/*.tar.gz dist/SHA256SUMS --verify-tag --title "GBK MCP $RELEASE_TAG" --notes-file release-notes.md

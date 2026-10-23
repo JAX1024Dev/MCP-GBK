@@ -13,9 +13,11 @@ import re
 import shutil
 import subprocess
 import sys
+import tarfile
 import tempfile
 import threading
 import time
+import zipfile
 
 from package_plugin import stage_marketplace
 
@@ -226,23 +228,49 @@ def live_probe(root, plugin, output):
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--binary", type=Path, required=True)
+    source = parser.add_mutually_exclusive_group(required=True)
+    source.add_argument("--binary", type=Path)
+    source.add_argument("--archive-dir", type=Path, help="Test the single packaged plugin in this directory after extraction")
     parser.add_argument("--output", type=Path, default=Path("benchmark-results/plugin"))
     parser.add_argument("--live", action="store_true")
     args = parser.parse_args()
-    binary, output = args.binary.resolve(), args.output.resolve()
+    output = args.output.resolve()
     with tempfile.TemporaryDirectory(prefix="gbk plugin 中文 ") as folder:
         parent = Path(folder)
         root = parent / "project 空格"
         root.mkdir()
-        plugin = stage_marketplace(binary, parent / "marketplace")
+        if args.archive_dir:
+            archives = [*args.archive_dir.glob("*-claude-plugin-*.zip"), *args.archive_dir.glob("*-claude-plugin-*.tar.gz")]
+            if len(archives) != 1:
+                raise ValueError("Expected exactly one platform plugin archive")
+            extracted = parent / "extracted"
+            if archives[0].suffix == ".zip":
+                with zipfile.ZipFile(archives[0]) as bundle:
+                    bundle.extractall(extracted)
+            else:
+                with tarfile.open(archives[0]) as bundle:
+                    # Python 3.9 compatibility; generated plugin archives contain
+                    # only regular files/directories and no links or traversal.
+                    for member in bundle.getmembers():
+                        path = Path(member.name)
+                        if path.is_absolute() or ".." in path.parts or not (member.isfile() or member.isdir()):
+                            raise ValueError(f"Unsafe archive member: {member.name}")
+                    options = {"filter": "data"} if hasattr(tarfile, "data_filter") else {}
+                    bundle.extractall(extracted, **options)
+            marketplace = extracted / "gbk-plugin"
+            plugin = marketplace / "plugins" / "gbk-mcp"
+            binary = plugin / "bin" / ("gbk-mcp.exe" if sys.platform == "win32" else "gbk-mcp")
+        else:
+            binary = args.binary.resolve()
+            marketplace = parent / "marketplace"
+            plugin = stage_marketplace(binary, marketplace)
         config = parent / "isolated-claude"
         config.mkdir()
         env = {**os.environ, "CLAUDE_CONFIG_DIR": str(config), "DISABLE_AUTOUPDATER": "1",
                "CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC": "1"}
         cli(["plugin", "validate", str(plugin), "--strict"], root, env)
-        cli(["plugin", "validate", str(parent / "marketplace"), "--strict"], root, env)
-        cli(["plugin", "marketplace", "add", str(parent / "marketplace")], root, env)
+        cli(["plugin", "validate", str(marketplace), "--strict"], root, env)
+        cli(["plugin", "marketplace", "add", str(marketplace)], root, env)
         cli(["plugin", "install", PLUGIN_ID, "--scope", "user"], root, env)
         listing = cli(["plugin", "list", "--json"], root, env).stdout
         assert PLUGIN_ID in listing and '"enabled": true' in listing, listing
@@ -267,7 +295,8 @@ def main():
             cases.append(live_probe(root, plugin, output))
         report = {"passed": True, "claude_version": cli(["--version"], root, env).stdout.strip(),
                   "platform": sys.platform, "native_hook_ms": {"median": sorted(samples)[len(samples)//2], "max": max(samples)},
-                  "isolated_install_update_uninstall": True, "cases": cases}
+                  "isolated_install_update_uninstall": True,
+                  "packaged_archive": archives[0].name if args.archive_dir else None, "cases": cases}
         output.mkdir(parents=True, exist_ok=True)
         (output / "summary.json").write_text(json.dumps(report, ensure_ascii=False, indent=2), encoding="utf-8")
         print(json.dumps(report, ensure_ascii=False))
