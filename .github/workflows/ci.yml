@@ -21,6 +21,7 @@ jobs:
         with:
           python-version: '3.12'
       - uses: Swatinem/rust-cache@v2
+      - run: python scripts/test_package_plugin.py
       - run: cargo fmt --check
       - run: cargo clippy --locked --all-targets -- -D warnings
       - run: cargo test --locked
@@ -33,11 +34,24 @@ jobs:
       - run: cargo build --release --locked
       - run: python scripts/package.py
       - run: python scripts/package_plugin.py
-      - run: python scripts/plugin_smoke.py --archive-dir dist
+      - run: python scripts/package_plugin.py --format plugin-zip
+      - name: Test both packaged plugin formats
+        shell: bash
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          import subprocess, sys
+          archives = sorted(Path('dist').glob('*-claude-plugin-*'))
+          assert len(archives) == 2, archives
+          for archive in archives:
+              label = 'gui' if '-gui-' in archive.name else 'marketplace'
+              subprocess.run([sys.executable, 'scripts/plugin_smoke.py', '--archive', str(archive),
+                              '--output', f'benchmark-results/plugin-{label}'], check=True)
+          PY
       - uses: actions/upload-artifact@v4
         with:
           name: gbk-plugin-check-${{ runner.os }}
-          path: benchmark-results/plugin/summary.json
+          path: benchmark-results/plugin-*/summary.json
           if-no-files-found: error
       - uses: actions/upload-artifact@v4
         with:

@@ -88,3 +88,16 @@ gbk-mcp --root <项目目录> --hook pre-tool-use
 三平台 CI 从最终压缩包解压后运行隔离安装及 Hook/MCP 闭环；通过后发布同一个
 v0.2.0 Release，包含三个 MCP ZIP、三个插件包及统一 SHA256SUMS。
 发布完成后只验证版本及附件存在，不下载已发布附件复测。
+
+
+## 0.2.1 GUI ZIP 安装补充
+
+面向 Claude Code 和 Desktop 本机 Code 页签，新增三平台独立 GUI ZIP，保留
+marketplace 格式。GUI 包根目录放插件清单、MCP、Skill 和默认 Hook，原生程序
+放 `server/`，Unix ZIP 显式保存执行权限。Code 的 Upload local plugin 为本机
+安装入口，不依赖 API Key 会话不具备的账户插件同步；本机 3.6556.2 已查看确认
+该入口。安装／替换后新建会话，继续自动使用项目 root；不增加运行时下载依赖。
+
+打包器使用 `--format plugin-zip`，冒烟脚本使用 `--archive PATH` 验证具体压缩包。
+CLI 验证与 Desktop GUI 实测分别记录，不将 Linux CLI 验证写成 Linux GUI 已通过。
+准备 0.2.1 包和文档，不自动发布 Release，也不修改 v0.2.0 附件。

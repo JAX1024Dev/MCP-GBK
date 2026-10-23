@@ -1,6 +1,6 @@
 {
   "name": "gbk-mcp",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "Encoding-preserving GBK/UTF-8 file tools with default text-operation hooks. Offline plugin for Windows, Linux and macOS.",
   "author": {
     "name": "JAX1024Dev"

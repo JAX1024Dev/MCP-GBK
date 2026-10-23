@@ -2,6 +2,18 @@
 
 验证日期：2026-10-23，Asia/Shanghai。
 
+## 0.2.1 GUI ZIP 验证
+
+本次新增 GUI 打包和压缩包验证入口，Rust MCP/Hook 逻辑未修改。macOS 本机已用
+0.2.1 release 程序分别生成 GUI ZIP、marketplace tar.gz，并从最终压缩包解压运行
+真实 Claude Code 2.1.308 与本地模拟模型：两种格式的隔离安装、更新、卸载、主／
+子代理内置 Read 拒绝、MCP 读改复读、程序缺失及超时阻止均通过。
+
+五项打包契约测试通过，覆盖三平台 GUI 根目录布局、PE/ELF/Mach-O 架构匹配、
+默认 marketplace 兼容性、ZIP Unix 执行权限和路径越界拒绝。脱敏记录见
+[plugin-gui-tests.json](plugin-gui-tests.json)。CLI 测试不代替 Desktop GUI 验证，
+后者和三平台 CI 结果将在实际完成后补充；不自动创建 0.2.1 Release。
+
 ## 0.2.0 三平台插件打包验证
 
 本次只扩展插件打包、配置生成、文档与 CI，不修改 Rust 工具或 Hook 逻辑。

@@ -3,6 +3,13 @@
 适用于 Claude Code 2.1.308+，支持 Windows x64、Linux x64 GNU/glibc 和 macOS
 Apple Silicon。插件自带原生程序、五个 MCP 工具、Skill 和默认保护 Hook。
 
+提供两种安装格式：
+
+- **GUI ZIP**：文件名包含 `claude-plugin-gui`。在 Desktop 的 Code 模式打开
+  Customize → Plugins → Add plugin → Upload plugin，直接选择 ZIP。无需解压、
+  填 root 或运行终端命令。详见随包 `docs/GUI_PLUGIN.md`。
+- **Marketplace 包**：Windows ZIP、Unix tar.gz，按下面方式注册本地目录。
+
 Windows 解压 ZIP；macOS/Linux 用 `tar -xzf` 解压 tar.gz，以保留程序执行权限。
 在固定目录解压完整 marketplace 后执行：
 

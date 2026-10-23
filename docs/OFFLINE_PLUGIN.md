@@ -9,6 +9,9 @@
 | Linux x64（GNU/glibc） | `gbk-mcp-0.2.0-claude-plugin-linux-x86_64.tar.gz` |
 | macOS Apple Silicon | `gbk-mcp-0.2.0-claude-plugin-darwin-aarch64.tar.gz` |
 
+希望直接在 Desktop Code 上传 ZIP，可使用 0.2.1 的[GUI 专用包](GUI_PLUGIN.md)。
+本页介绍原有 marketplace 包；两种格式不可互相替代上传。
+
 ## Windows 校验与安装
 
 取得对应安装包及同版本 `SHA256SUMS`，可以拷入离线环境。以下命令从安装包

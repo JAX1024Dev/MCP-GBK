@@ -45,6 +45,18 @@ git push origin v0.2.0
 压缩包解压后测试隔离安装、主/子代理 Hook 和 MCP 闭环、程序缺失和超时拒绝。
 CI 安装固定版本 Claude Code 是开发验证依赖，不是插件运行时下载依赖。
 
+## 0.2.1 GUI ZIP
+
+0.2.1 仍处于开发状态，本次适配不创建标签或 Release。后续标签工作流每个平台
+额外执行 `python scripts/package_plugin.py --format plugin-zip`，生成
+`gbk-mcp-0.2.1-claude-plugin-gui-<平台>.zip`。统一检查九个包（三个 MCP、三个
+marketplace、三个 GUI ZIP）和 SHA256SUMS，全部齐全才允许发布；已有 v0.2.0
+附件保持不变。
+
+CI 运行 `python scripts/test_package_plugin.py` 验证布局及权限，再分别指定
+`python scripts/plugin_smoke.py --archive PATH` 验证两个真实压缩包；`--archive-dir`
+仅用于目录内恰好一个插件包时。Desktop GUI 验证状态另见 VALIDATION.md。
+
 ## 检查发布状态
 
 ```sh

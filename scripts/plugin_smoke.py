@@ -11,6 +11,7 @@ import os
 from pathlib import Path
 import re
 import shutil
+import stat
 import subprocess
 import sys
 import tarfile
@@ -226,10 +227,57 @@ def live_probe(root, plugin, output):
     return {"passed": True, "scripted_model": False, "gbk_bytes_preserved": True, "tool_calls": tools}
 
 
+def extract_plugin_archive(archive, destination):
+    """Extract either layout, restoring the same ZIP execute bits as Desktop."""
+    destination.mkdir(parents=True)
+    if archive.suffix == ".zip":
+        with zipfile.ZipFile(archive) as bundle:
+            for entry in bundle.infolist():
+                path = Path(entry.filename)
+                mode = entry.external_attr >> 16
+                if (path.is_absolute() or ".." in path.parts or "\\" in entry.filename
+                        or stat.S_ISLNK(mode)):
+                    raise ValueError(f"Unsafe archive member: {entry.filename}")
+                extracted = Path(bundle.extract(entry, destination))
+                if extracted.is_file():
+                    extracted.chmod(0o755 if mode & 0o111 else 0o644)
+    else:
+        with tarfile.open(archive) as bundle:
+            for member in bundle.getmembers():
+                path = Path(member.name)
+                if path.is_absolute() or ".." in path.parts or not (member.isfile() or member.isdir()):
+                    raise ValueError(f"Unsafe archive member: {member.name}")
+            options = {"filter": "data"} if hasattr(tarfile, "data_filter") else {}
+            bundle.extractall(destination, **options)
+    if (destination / ".claude-plugin" / "plugin.json").is_file():
+        # Only the test harness supplies a catalog for CLI installation. The GUI
+        # archive itself stays a single plugin and its configs are never rewritten.
+        marketplace = destination.parent / "test-marketplace"
+        plugin = marketplace / "plugins" / "gbk-mcp"
+        plugin.parent.mkdir(parents=True)
+        shutil.move(str(destination), plugin)
+        (marketplace / ".claude-plugin").mkdir()
+        (marketplace / ".claude-plugin" / "marketplace.json").write_text(json.dumps({
+            "name": "jax1024dev-gbk", "owner": {"name": "GBK packaging test"},
+            "description": "Temporary catalog for testing the unmodified GUI plugin ZIP.",
+            "plugins": [{"name": "gbk-mcp", "source": "./plugins/gbk-mcp"}],
+        }), encoding="utf-8")
+        directory = "server"
+    else:
+        marketplace = destination / "gbk-plugin"
+        plugin = marketplace / "plugins" / "gbk-mcp"
+        directory = "bin"
+    binary = plugin / directory / ("gbk-mcp.exe" if sys.platform == "win32" else "gbk-mcp")
+    if not binary.is_file():
+        raise ValueError(f"Plugin executable missing: {binary}")
+    return plugin, marketplace, binary
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     source = parser.add_mutually_exclusive_group(required=True)
     source.add_argument("--binary", type=Path)
+    source.add_argument("--archive", type=Path, help="Test one marketplace archive or GUI plugin ZIP")
     source.add_argument("--archive-dir", type=Path, help="Test the single packaged plugin in this directory after extraction")
     parser.add_argument("--output", type=Path, default=Path("benchmark-results/plugin"))
     parser.add_argument("--live", action="store_true")
@@ -239,27 +287,14 @@ def main():
         parent = Path(folder)
         root = parent / "project 空格"
         root.mkdir()
+        archive = args.archive
         if args.archive_dir:
             archives = [*args.archive_dir.glob("*-claude-plugin-*.zip"), *args.archive_dir.glob("*-claude-plugin-*.tar.gz")]
             if len(archives) != 1:
-                raise ValueError("Expected exactly one platform plugin archive")
-            extracted = parent / "extracted"
-            if archives[0].suffix == ".zip":
-                with zipfile.ZipFile(archives[0]) as bundle:
-                    bundle.extractall(extracted)
-            else:
-                with tarfile.open(archives[0]) as bundle:
-                    # Python 3.9 compatibility; generated plugin archives contain
-                    # only regular files/directories and no links or traversal.
-                    for member in bundle.getmembers():
-                        path = Path(member.name)
-                        if path.is_absolute() or ".." in path.parts or not (member.isfile() or member.isdir()):
-                            raise ValueError(f"Unsafe archive member: {member.name}")
-                    options = {"filter": "data"} if hasattr(tarfile, "data_filter") else {}
-                    bundle.extractall(extracted, **options)
-            marketplace = extracted / "gbk-plugin"
-            plugin = marketplace / "plugins" / "gbk-mcp"
-            binary = plugin / "bin" / ("gbk-mcp.exe" if sys.platform == "win32" else "gbk-mcp")
+                raise ValueError("Expected one plugin archive; use --archive PATH when both formats are present")
+            archive = archives[0]
+        if archive:
+            plugin, marketplace, binary = extract_plugin_archive(archive, parent / "extracted")
         else:
             binary = args.binary.resolve()
             marketplace = parent / "marketplace"
@@ -296,7 +331,7 @@ def main():
         report = {"passed": True, "claude_version": cli(["--version"], root, env).stdout.strip(),
                   "platform": sys.platform, "native_hook_ms": {"median": sorted(samples)[len(samples)//2], "max": max(samples)},
                   "isolated_install_update_uninstall": True,
-                  "packaged_archive": archives[0].name if args.archive_dir else None, "cases": cases}
+                  "packaged_archive": archive.name if archive else None, "cases": cases}
         output.mkdir(parents=True, exist_ok=True)
         (output / "summary.json").write_text(json.dumps(report, ensure_ascii=False, indent=2), encoding="utf-8")
         print(json.dumps(report, ensure_ascii=False))

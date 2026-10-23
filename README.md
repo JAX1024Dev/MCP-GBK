@@ -8,6 +8,12 @@
 
 ## 下载与安装
 
+开发中的 **0.2.1** 新增三平台 GUI ZIP：在 Desktop **Code → Customize → Plugins →
+Add plugin → Upload plugin** 直接上传，无需终端安装命令；使用本机安装入口，
+不依靠账户插件同步。[GUI 安装指南](docs/GUI_PLUGIN.md) 说明包名、替换和系统提示。
+0.2.1 尚未发布 Release，可从 [CI 构建产物](https://github.com/JAX1024Dev/MCP-GBK/actions/workflows/ci.yml)
+取得 `claude-plugin-gui-*.zip`；原 marketplace 格式保留。
+
 当前版本为 **v0.2.0**。从 [GitHub Releases](https://github.com/JAX1024Dev/MCP-GBK/releases/tag/v0.2.0)
 下载对应平台的包和 `SHA256SUMS`。独立 MCP 包适合 Claude、Codex 等客户端；
 Claude 插件包含同版本程序、Skill、本地 marketplace 和默认 Hook。
@@ -43,6 +49,7 @@ Windows 使用 `target\release\gbk-mcp.exe`。直接启动后会等待 MCP 客�
 
 ## 文档导航
 
+- [Desktop Code GUI 安装](docs/GUI_PLUGIN.md)：直接上传三平台单插件 ZIP。
 - [Claude Hook 保护](docs/HOOKS.md)：0.2.0 的默认文本工具拦截和独立 MCP 配置。
 - [三平台离线插件](docs/OFFLINE_PLUGIN.md)：自带原生程序、默认 Hook、本地 marketplace 安装。
 - [插件实施备忘](docs/CLAUDE_PLUGIN_PLAN.md)：已确认方案、验收要求和后续维护依据。
